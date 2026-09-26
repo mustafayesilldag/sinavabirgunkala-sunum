@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sınava Bir Gün Kala — Geliştirme Paketi | MYSTIC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#030509;
+    --bg-2:#060b14;
+    --bg-3:#0b1422;
+    --accent:#2e9bff;
+    --accent-glow:#7cc4ff;
+    --accent-rgb:46,155,255;
+    --glow-rgb:124,196,255;
+    --text-main:#e8f2fb;
+    --text-muted:#7f93a8;
+    --text-dim:#56687c;
+    --border:rgba(124,196,255,.09);
+    --hairline:rgba(255,255,255,.08);
+    --font-display:"Cormorant Garamond", Georgia, serif;
+    --font-body:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --max:1100px;
+    --ease-out:cubic-bezier(.23,1,.32,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text-main);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3,h4,.item-no,.stat .num,.rating .big,.rung b,.steps3 b,.campaign b,.brand{font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;}
+  svg{display:block;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 32px;}
+
+  /* ---------- Üst bar ---------- */
+  .topbar{
+    position:fixed;inset:0 0 auto 0;z-index:50;height:64px;
+    display:flex;align-items:center;
+    background:linear-gradient(to bottom, rgba(3,5,9,.92), rgba(3,5,9,.72));
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--hairline);
+  }
+  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;width:100%;}
+  .brand{font-family:var(--font-display);font-weight:700;font-size:1.35rem;letter-spacing:.14em;}
+  .brand span{color:var(--accent-glow);}
+  .topnav{display:flex;gap:28px;font-size:.8rem;font-weight:500;letter-spacing:.05em;color:var(--text-muted);}
+  .topnav a{transition:color .2s;}
+  .topnav a:hover{color:var(--text-main);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;min-height:100vh;display:flex;align-items:center;
+    padding:140px 0 180px;overflow:hidden;isolation:isolate;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;z-index:-2;opacity:.55;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, rgba(232,242,251,.7) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 72%, rgba(232,242,251,.45) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 44% 34%, rgba(232,242,251,.6) 50%, transparent 51%),
+      radial-gradient(1px 1px at 63% 12%, rgba(232,242,251,.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 77% 58%, rgba(232,242,251,.4) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 88% 26%, rgba(232,242,251,.65) 50%, transparent 51%),
+      radial-gradient(1px 1px at 93% 81%, rgba(232,242,251,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 6% 88%, rgba(232,242,251,.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 52% 90%, rgba(232,242,251,.3) 50%, transparent 51%),
+      radial-gradient(1.1px 1.1px at 36% 8%, rgba(232,242,251,.5) 50%, transparent 51%);
+  }
+  .hero::after{
+    content:"";position:absolute;z-index:-1;left:50%;top:-20%;width:900px;height:900px;transform:translateX(-50%);
+    background:radial-gradient(circle, rgba(var(--accent-rgb),.10), transparent 60%);
+    pointer-events:none;
+  }
+  .horizon{
+    position:absolute;z-index:-1;left:50%;bottom:-1480px;width:2200px;height:1600px;transform:translateX(-50%);
+    border-radius:50%;
+    background:radial-gradient(ellipse at 50% 0%, #0a1a2e 0%, #050b14 38%, var(--bg) 70%);
+    border-top:1px solid rgba(var(--glow-rgb),.55);
+    box-shadow:0 -2px 30px rgba(var(--accent-rgb),.45), 0 -40px 120px rgba(var(--accent-rgb),.18), inset 0 20px 60px rgba(var(--accent-rgb),.12);
+  }
+  .hero-inner{max-width:860px;}
+  .hero .client{font-size:.8rem;font-weight:500;letter-spacing:.05em;color:var(--text-muted);margin-bottom:26px;display:flex;align-items:center;gap:10px;}
+  .hero .client i{display:inline-block;width:28px;height:1px;background:var(--accent);}
+  h1.display{
+    font-family:var(--font-display);font-weight:700;
+    font-size:clamp(3.2rem, 7.5vw, 6.4rem);line-height:1.02;letter-spacing:.01em;
+    text-shadow:0 0 40px rgba(var(--glow-rgb),.18);
+  }
+  h1.display em{font-style:italic;font-weight:600;color:var(--accent-glow);}
+  .hero p.sub{margin-top:26px;font-size:1.15rem;color:var(--text-muted);max-width:640px;}
+  .cta-row{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:14px 30px;border-radius:4px;font-size:.92rem;font-weight:500;letter-spacing:.02em;
+    transition:transform .25s var(--ease-out), background .25s, box-shadow .25s, border-color .25s;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 0 24px rgba(var(--accent-rgb),.35);}
+  .btn-primary:hover{background:var(--accent-glow);color:#031020;transform:translateY(-2px);box-shadow:0 0 34px rgba(var(--glow-rgb),.5);}
+  .btn-secondary{border:1px solid var(--hairline);color:var(--text-main);}
+  .btn-secondary:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .hero-meta{
+    margin-top:64px;padding-top:22px;border-top:1px solid var(--hairline);
+    display:flex;gap:44px;flex-wrap:wrap;font-size:.82rem;color:var(--text-muted);
+  }
+  .hero-meta b{display:block;color:var(--text-main);font-weight:500;margin-bottom:2px;}
+
+  /* ---------- Bölümler ---------- */
+  section.block{padding:120px 0;position:relative;}
+  section.block + section.block{border-top:1px solid var(--hairline);}
+  h2.headline{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(2.1rem, 4vw, 3rem);line-height:1.15;
+  }
+  h2.headline::after{content:"";display:block;width:60px;height:2px;background:var(--accent);margin-top:20px;box-shadow:0 0 12px rgba(var(--accent-rgb),.6);}
+  .lede{margin-top:24px;font-size:1.08rem;color:var(--text-muted);max-width:66ch;}
+  h3.title{font-family:var(--font-display);font-weight:600;font-size:1.9rem;line-height:1.2;}
+  .muted{color:var(--text-muted);}
+
+  /* Bugün */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px;}
+  .stat{
+    background:var(--bg-2);border:1px solid var(--hairline);border-radius:10px;padding:28px 24px;
+    transition:transform .35s var(--ease-out), border-color .35s;
+  }
+  .stat:hover{transform:translateY(-5px);border-color:rgba(var(--accent-rgb),.5);}
+  .stat .num{font-family:var(--font-display);font-size:2.6rem;font-weight:600;color:var(--accent-glow);line-height:1;}
+  .stat .lbl{margin-top:12px;font-size:.9rem;color:var(--text-muted);}
+
+  /* ---------- Modül ---------- */
+  .module-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:64px;}
+  .panel{
+    background:var(--bg-2);border:1px solid var(--hairline);border-radius:10px;padding:34px;
+    transition:border-color .35s;
+  }
+  .panel:hover{border-color:rgba(var(--accent-rgb),.35);}
+  .panel .tag{font-size:.75rem;font-weight:500;letter-spacing:.05em;color:var(--accent-glow);}
+  .panel h3{margin-top:6px;}
+  .panel p{margin-top:14px;color:var(--text-muted);}
+  ul.ticks{list-style:none;margin-top:20px;display:grid;gap:10px;}
+  ul.ticks li{position:relative;padding-left:26px;font-size:.95rem;color:#c9d7e5;}
+  ul.ticks li::before{
+    content:"";position:absolute;left:0;top:.55em;width:12px;height:6px;
+    border-left:1.5px solid var(--accent);border-bottom:1.5px solid var(--accent);transform:rotate(-45deg);
+  }
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:26px;border:1px solid var(--hairline);border-radius:8px;overflow:hidden;}
+  .flow div{padding:16px 14px;border-right:1px solid var(--hairline);}
+  .flow div:last-child{border-right:none;}
+  .flow b{display:block;font-size:.78rem;font-weight:500;letter-spacing:.04em;color:var(--accent-glow);}
+  .flow span{display:block;margin-top:4px;font-size:.86rem;color:var(--text-muted);line-height:1.4;}
+
+  /* Mockup çerçevesi */
+  .mock{
+    background:#050a12;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;position:relative;
+  }
+  .mock-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--hairline);background:#070d17;}
+  .mock-bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12);}
+  .mock-bar span{margin-left:10px;font-size:.72rem;color:var(--text-dim);letter-spacing:.02em;}
+  .mock-caption{margin-top:12px;font-size:.8rem;color:var(--text-dim);}
+
+  /* Widget mockup */
+  .widget-stage{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;}
+  .fake-page{position:relative;height:250px;padding:16px;}
+  .fake-page .ln{height:8px;border-radius:4px;background:rgba(255,255,255,.05);margin-bottom:10px;}
+  .fake-page .ln.w60{width:60%;}.fake-page .ln.w80{width:80%;}.fake-page .ln.w40{width:40%;}
+  .live-widget{
+    position:absolute;top:14px;right:14px;width:210px;
+    background:var(--bg-3);border:1px solid rgba(var(--accent-rgb),.45);border-radius:10px;overflow:hidden;
+    box-shadow:0 0 28px rgba(var(--accent-rgb),.22);
+  }
+  .live-widget .banner{height:62px;background:
+      radial-gradient(circle at 20% 30%, rgba(var(--glow-rgb),.55), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(var(--accent-rgb),.55), transparent 50%),
+      #0b1a2d;position:relative;}
+  .live-widget .banner b{position:absolute;left:12px;bottom:8px;font-family:var(--font-display);font-size:1.05rem;font-weight:700;}
+  .live-widget .body{padding:10px 12px 12px;}
+  .live-widget .row{display:flex;align-items:center;gap:8px;}
+  .avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1c3a5c,#0e2036);border:1px solid rgba(var(--glow-rgb),.35);
+    display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:var(--accent-glow);flex-shrink:0;}
+  .live-widget .who{font-size:.72rem;line-height:1.3;}
+  .live-widget .who small{display:block;color:var(--text-muted);font-size:.66rem;}
+  .countdown{display:flex;gap:6px;margin-top:10px;}
+  .countdown div{flex:1;text-align:center;background:rgba(255,255,255,.03);border:1px solid var(--hairline);border-radius:5px;padding:4px 0;}
+  .countdown b{display:block;font-size:.9rem;font-weight:600;}
+  .countdown small{font-size:.58rem;color:var(--text-muted);}
+  .live-widget .join{
+    display:block;margin-top:10px;text-align:center;padding:7px 0;border-radius:4px;
+    background:var(--accent);color:#fff;font-size:.74rem;font-weight:600;
+  }
+  .live-widget .x{position:absolute;top:6px;right:8px;font-size:.8rem;color:rgba(255,255,255,.6);}
+  .live-widget.off{border-color:var(--hairline);box-shadow:none;}
+  .live-widget.off .inner{filter:blur(3px);opacity:.55;}
+  .live-widget.off .soon{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    font-size:.78rem;font-weight:600;letter-spacing:.04em;
+  }
+  .live-widget.off .soon small{display:block;margin-top:4px;font-weight:400;color:var(--text-muted);font-size:.66rem;letter-spacing:0;}
+
+  /* Oda mockup */
+  .room{display:grid;grid-template-columns:1fr 220px;height:360px;}
+  .room-main{position:relative;display:flex;flex-direction:column;padding:14px;gap:12px;border-right:1px solid var(--hairline);}
+  .stage{flex:1;border-radius:8px;position:relative;overflow:hidden;
+    background:radial-gradient(circle at 50% 38%, #16304d 0%, #0a1626 45%, #060c16 100%);border:1px solid var(--hairline);}
+  .stage .sil{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:130px;height:150px;}
+  .stage .sil::before{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:62px;height:62px;border-radius:50%;background:#1d3b5d;}
+  .stage .sil::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:130px;height:80px;border-radius:65px 65px 0 0;background:#1d3b5d;}
+  .stage .name{position:absolute;left:10px;bottom:10px;font-size:.7rem;background:rgba(3,5,9,.75);padding:4px 8px;border-radius:4px;border:1px solid var(--hairline);}
+  .stage .share{position:absolute;right:10px;top:10px;font-size:.66rem;color:var(--accent-glow);border:1px solid rgba(var(--accent-rgb),.5);padding:3px 8px;border-radius:20px;}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .tile{height:58px;border-radius:6px;background:#0a1422;border:1px solid var(--hairline);position:relative;display:flex;align-items:center;justify-content:center;}
+  .tile.speaking{border-color:var(--accent);box-shadow:0 0 12px rgba(var(--accent-rgb),.35);}
+  .tile .mi{position:absolute;right:5px;bottom:5px;width:14px;height:14px;color:var(--text-muted);}
+  .tile .mi.off{opacity:.45;}
+  .tile .hand{position:absolute;left:5px;top:4px;font-size:.62rem;color:var(--accent-glow);}
+  .controls{display:flex;justify-content:center;gap:10px;}
+  .ctl{width:36px;height:36px;border-radius:50%;border:1px solid var(--hairline);display:flex;align-items:center;justify-content:center;color:var(--text-main);background:#0a1422;}
+  .ctl svg{width:16px;height:16px;}
+  .ctl.on{border-color:var(--accent);color:var(--accent-glow);}
+  .ctl.end{width:auto;padding:0 14px;border-radius:18px;font-size:.7rem;font-weight:600;white-space:nowrap;border-color:rgba(var(--accent-rgb),.5);}
+  .room-chat{display:flex;flex-direction:column;padding:12px;gap:8px;font-size:.72rem;}
+  .room-chat .h{font-size:.68rem;font-weight:600;letter-spacing:.05em;color:var(--text-muted);padding-bottom:6px;border-bottom:1px solid var(--hairline);}
+  .msg{background:rgba(255,255,255,.03);border:1px solid var(--hairline);border-radius:6px;padding:6px 8px;line-height:1.4;}
+  .msg b{display:block;font-size:.64rem;color:var(--accent-glow);font-weight:600;}
+  .msg.q{border-color:rgba(var(--accent-rgb),.45);}
+  .msg.q::after{content:"Soru · yanıtlandı";display:block;margin-top:3px;font-size:.58rem;color:var(--text-muted);}
+
+  /* Sohbet + Odaya Katıl mockup */
+  .chatbox{width:100%;max-width:340px;margin-left:auto;}
+  .chat-head{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--hairline);}
+  .chat-head b{font-size:.82rem;}
+  .chat-head small{display:block;font-size:.66rem;color:var(--text-muted);}
+  .chat-body{padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .bubble{max-width:78%;padding:8px 11px;border-radius:10px;font-size:.76rem;line-height:1.45;}
+  .bubble.them{background:#0d1a2a;border:1px solid var(--hairline);}
+  .bubble.me{align-self:flex-end;background:rgba(var(--accent-rgb),.16);border:1px solid rgba(var(--accent-rgb),.35);}
+  .join-card{
+    border:1px solid rgba(var(--accent-rgb),.6);border-radius:10px;padding:14px;text-align:center;
+    background:radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb),.18), transparent 70%), #07111d;
+    box-shadow:0 0 26px rgba(var(--accent-rgb),.25);
+  }
+  .join-card small{display:block;font-size:.68rem;color:var(--text-muted);}
+  .join-card b{display:block;margin-top:4px;font-size:.86rem;}
+  .join-card .go{
+    display:inline-flex;align-items:center;gap:8px;margin-top:12px;padding:9px 18px;border-radius:4px;
+    background:var(--accent);color:#fff;font-size:.78rem;font-weight:600;position:relative;
+  }
+  .join-card .go::after{
+    content:"";position:absolute;inset:-5px;border-radius:7px;border:1px solid rgba(var(--glow-rgb),.7);
+    animation:pulse 2.2s var(--ease-out) infinite;
+  }
+  @keyframes pulse{0%{opacity:.9;transform:scale(1);}100%{opacity:0;transform:scale(1.18);}}
+
+  /* Ortak özellikler */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;}
+  .feat{background:var(--bg-2);border:1px solid var(--hairline);border-radius:10px;padding:24px;transition:transform .35s var(--ease-out), border-color .35s;}
+  .feat:hover{transform:translateY(-5px);border-color:rgba(var(--accent-rgb),.45);}
+  .feat .ic{width:36px;height:36px;border-radius:8px;border:1px solid rgba(var(--accent-rgb),.35);display:flex;align-items:center;justify-content:center;color:var(--accent-glow);}
+  .feat .ic svg{width:18px;height:18px;}
+  .feat h4{margin-top:16px;font-size:1rem;font-weight:600;}
+  .feat p{margin-top:6px;font-size:.88rem;color:var(--text-muted);}
+  .feat.plus{border-style:dashed;}
+  .feat.plus h4::after{content:" · önerimiz";font-weight:400;font-size:.75rem;color:var(--accent-glow);}
+
+  /* ---------- Geliştirmeler ---------- */
+  .items{display:grid;gap:26px;margin-top:64px;}
+  .item{
+    display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;
+    background:var(--bg-2);border:1px solid var(--hairline);border-radius:12px;padding:40px;
+    transition:border-color .35s;
+  }
+  .item:hover{border-color:rgba(var(--accent-rgb),.35);}
+  .item:nth-child(even) .copy{order:2;}
+  .item-head{display:flex;align-items:baseline;gap:16px;}
+  .item-no{
+    font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--accent-glow);
+    min-width:40px;height:40px;border:1px solid rgba(var(--accent-rgb),.45);border-radius:6px;
+    display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;align-self:center;
+  }
+  .item .value{margin-top:14px;color:var(--text-muted);}
+  .who-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;}
+  .who-tags span{font-size:.72rem;font-weight:500;letter-spacing:.04em;padding:4px 11px;border-radius:20px;border:1px solid var(--hairline);color:var(--text-muted);}
+
+  /* Küçük mockup bileşenleri */
+  .mini{padding:18px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;padding:4px 10px;border-radius:20px;border:1px solid var(--hairline);color:#c9d7e5;}
+  .chip.acc{border-color:rgba(var(--accent-rgb),.55);color:var(--accent-glow);}
+  .chip.fill{background:var(--accent);border-color:var(--accent);color:#fff;}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .prof-top{display:flex;gap:12px;align-items:center;}
+  .prof-top .avatar{width:48px;height:48px;font-size:.9rem;}
+  .prof-top b{font-size:.95rem;}
+  .prof-top small{display:block;font-size:.72rem;color:var(--text-muted);}
+  .check{display:inline-flex;width:14px;height:14px;border-radius:50%;background:var(--accent);vertical-align:-2px;margin-left:4px;align-items:center;justify-content:center;}
+  .check::after{content:"";width:5px;height:3px;border-left:1.4px solid #fff;border-bottom:1.4px solid #fff;transform:rotate(-45deg) translateY(-1px);}
+  .tabs{display:flex;gap:18px;margin-top:16px;border-bottom:1px solid var(--hairline);font-size:.74rem;color:var(--text-muted);}
+  .tabs span{padding-bottom:8px;}
+  .tabs span.on{color:var(--text-main);border-bottom:1.5px solid var(--accent);}
+  .timeline{margin-top:14px;display:grid;gap:12px;}
+  .tl{position:relative;padding-left:18px;font-size:.76rem;line-height:1.45;}
+  .tl::before{content:"";position:absolute;left:3px;top:6px;width:7px;height:7px;border-radius:50%;border:1.5px solid var(--accent);}
+  .tl small{display:block;color:var(--text-muted);}
+  .rating{display:flex;gap:18px;align-items:center;}
+  .rating .big{font-family:var(--font-display);font-size:3rem;font-weight:700;line-height:1;}
+  .stars{color:var(--accent-glow);letter-spacing:2px;font-size:.9rem;}
+  .bars{flex:1;display:grid;gap:5px;}
+  .bars div{display:grid;grid-template-columns:14px 1fr;gap:8px;align-items:center;font-size:.64rem;color:var(--text-muted);}
+  .bars i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.06);position:relative;overflow:hidden;}
+  .bars i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);background:var(--accent);opacity:.85;}
+  .review{margin-top:14px;border:1px solid var(--hairline);border-radius:8px;padding:12px;font-size:.76rem;line-height:1.5;}
+  .review .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .review .top small{color:var(--accent-glow);font-size:.66rem;}
+  .steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .steps3 div{border:1px solid var(--hairline);border-radius:8px;padding:12px;font-size:.74rem;line-height:1.45;}
+  .steps3 b{display:block;font-family:var(--font-display);font-size:1.3rem;color:var(--accent-glow);}
+  .procon{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+  .procon div{border:1px solid var(--hairline);border-radius:8px;padding:12px;font-size:.74rem;line-height:1.5;}
+  .procon div.con{border-style:dashed;}
+  .procon h5{font-size:.72rem;font-weight:600;letter-spacing:.04em;margin-bottom:6px;color:var(--accent-glow);}
+  .procon div.con h5{color:var(--text-muted);}
+  .procon ul{list-style:none;display:grid;gap:4px;}
+  .procon li::before{content:"— ";color:var(--text-dim);}
+  .rec{display:grid;gap:8px;}
+  .rec-row{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:center;border:1px solid var(--hairline);border-radius:8px;padding:9px 10px;font-size:.74rem;}
+  .play{width:30px;height:30px;border-radius:50%;border:1px solid rgba(var(--accent-rgb),.6);display:flex;align-items:center;justify-content:center;color:var(--accent-glow);}
+  .play::after{content:"";border-left:8px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px;}
+  .rec-row small{display:block;color:var(--text-muted);}
+  .lock{margin-top:10px;font-size:.7rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;}
+  .lock svg{width:12px;height:12px;color:var(--accent-glow);}
+  .family{display:grid;gap:12px;}
+  .fam-parent{display:flex;align-items:center;gap:10px;border:1px solid rgba(var(--accent-rgb),.45);border-radius:8px;padding:10px 12px;font-size:.78rem;}
+  .fam-kids{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .fam-kid{display:flex;align-items:center;gap:8px;border:1px solid var(--hairline);border-radius:8px;padding:10px;font-size:.74rem;}
+  .fam-kid small{display:block;color:var(--text-muted);font-size:.66rem;}
+  .meter{border:1px solid var(--hairline);border-radius:8px;padding:12px;font-size:.74rem;}
+  .meter .track{margin-top:8px;height:7px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden;}
+  .meter .track i{display:block;height:100%;width:62%;background:var(--accent);box-shadow:0 0 10px rgba(var(--accent-rgb),.6);}
+  .ladder{display:grid;gap:6px;}
+  .rung{display:grid;grid-template-columns:1fr auto;align-items:center;border:1px solid var(--hairline);border-radius:7px;padding:9px 12px;font-size:.78rem;}
+  .rung b{font-family:var(--font-display);font-size:1.15rem;color:var(--accent-glow);}
+  .rung:nth-child(1){opacity:.55;}.rung:nth-child(2){opacity:.7;}.rung:nth-child(3){opacity:.85;}
+  .rung:nth-child(4){border-color:rgba(var(--accent-rgb),.6);box-shadow:0 0 16px rgba(var(--accent-rgb),.18);}
+  .code{display:flex;margin-top:10px;border:1px solid var(--hairline);border-radius:6px;overflow:hidden;font-size:.74rem;}
+  .code span{flex:1;padding:8px 10px;color:var(--text-muted);}
+  .code b{padding:8px 12px;background:rgba(var(--accent-rgb),.18);color:var(--accent-glow);font-weight:600;}
+  .pipeline{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .col{border:1px solid var(--hairline);border-radius:8px;padding:8px;min-height:120px;}
+  .col h6{font-size:.64rem;font-weight:600;letter-spacing:.05em;color:var(--text-muted);margin-bottom:8px;}
+  .col .card-s{border:1px solid var(--hairline);border-radius:5px;padding:6px;font-size:.64rem;margin-bottom:6px;line-height:1.35;}
+  .col .card-s small{display:block;color:var(--text-muted);font-size:.58rem;}
+  .col:last-child .card-s{border-color:rgba(var(--accent-rgb),.55);}
+  .form-prev{display:grid;gap:7px;margin-bottom:12px;}
+  .field{border:1px solid var(--hairline);border-radius:6px;padding:7px 10px;font-size:.7rem;color:var(--text-muted);}
+  .quiz-q{font-size:.8rem;line-height:1.5;}
+  .opts{display:grid;gap:6px;margin-top:10px;}
+  .opt{border:1px solid var(--hairline);border-radius:6px;padding:7px 10px;font-size:.74rem;display:flex;justify-content:space-between;}
+  .opt.right{border-color:var(--accent);background:rgba(var(--accent-rgb),.12);}
+  .opt.wrong{border-style:dashed;opacity:.5;text-decoration:line-through;}
+  .explain{margin-top:10px;border-left:2px solid var(--accent);padding:6px 10px;font-size:.72rem;color:#c9d7e5;line-height:1.5;}
+  .suggest{margin-top:10px;display:flex;justify-content:space-between;align-items:center;border:1px solid rgba(var(--accent-rgb),.45);border-radius:8px;padding:9px 12px;font-size:.72rem;}
+  .suggest b{color:var(--accent-glow);}
+  .campaign{
+    border:1px solid rgba(var(--accent-rgb),.5);border-radius:10px;padding:18px;text-align:center;
+    background:radial-gradient(circle at 50% 120%, rgba(var(--accent-rgb),.25), transparent 60%), #07101c;
+  }
+  .campaign b{display:block;font-family:var(--font-display);font-size:1.8rem;font-weight:700;}
+  .campaign small{display:block;margin-top:4px;font-size:.74rem;color:var(--text-muted);}
+  .select-prev{margin-top:12px;border:1px solid rgba(var(--accent-rgb),.5);border-radius:6px;padding:8px 10px;font-size:.74rem;display:flex;justify-content:space-between;}
+  .select-prev span{color:var(--text-muted);}
+
+  /* Tarifeler */
+  .tariffs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;}
+  .tariffs div{border:1px solid var(--hairline);border-radius:8px;padding:10px;font-size:.7rem;line-height:1.45;}
+  .tariffs b{display:block;font-size:.76rem;margin-bottom:3px;}
+
+  /* Yol haritası */
+  .roadmap{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:56px;position:relative;}
+  .roadmap::before{content:"";position:absolute;left:0;right:0;top:22px;height:1px;background:linear-gradient(to right, var(--accent), rgba(var(--accent-rgb),.1));}
+  .phase{position:relative;padding-top:52px;}
+  .phase::before{content:"";position:absolute;left:0;top:15px;width:15px;height:15px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 12px rgba(var(--accent-rgb),.6);}
+  .phase .k{font-size:.75rem;font-weight:500;letter-spacing:.05em;color:var(--accent-glow);}
+  .phase h4{margin-top:6px;font-family:var(--font-display);font-size:1.5rem;font-weight:600;line-height:1.2;}
+  .phase p{margin-top:10px;font-size:.88rem;color:var(--text-muted);}
+  .phase .chips{margin-top:14px;}
+
+  /* İlkeler */
+  .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;}
+
+  /* Kapanış */
+  .closing{
+    margin-top:0;border:1px solid rgba(var(--accent-rgb),.35);border-radius:14px;padding:64px 56px;text-align:center;
+    background:radial-gradient(circle at 50% 0%, rgba(var(--accent-rgb),.14), transparent 60%), var(--bg-2);
+  }
+  .closing h2{font-family:var(--font-display);font-weight:600;font-size:clamp(2rem,3.6vw,2.8rem);line-height:1.2;}
+  .closing p{margin:18px auto 0;max-width:620px;color:var(--text-muted);}
+  footer.foot{padding:48px 0 60px;border-top:1px solid var(--hairline);margin-top:120px;font-size:.8rem;color:var(--text-dim);}
+  footer.foot .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  footer.foot b{font-family:var(--font-display);font-size:1.05rem;letter-spacing:.14em;color:var(--text-main);font-weight:700;}
+
+
+  /* Özet listesi */
+  .summary{margin-top:48px;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;}
+  .srow{display:grid;grid-template-columns:56px 1.15fr 1fr;gap:24px;align-items:center;padding:18px 24px;border-top:1px solid var(--hairline);transition:background .2s;}
+  .srow:first-child{border-top:none;}
+  a.srow:hover{background:rgba(var(--accent-rgb),.05);}
+  .shead{font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--text-dim);text-transform:uppercase;padding:14px 24px;background:var(--bg-2);}
+  .sno{font-family:var(--font-display);font-weight:700;font-size:1.1rem;color:var(--accent-glow);width:38px;height:38px;border:1px solid rgba(var(--accent-rgb),.45);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;}
+  .srow b{display:block;font-weight:600;font-size:.98rem;}
+  .srow small{display:block;margin-top:3px;font-size:.86rem;color:var(--text-muted);line-height:1.5;}
+  .srow > span:last-child{font-size:.9rem;color:#c9d7e5;}
+  .srow.shead > span:last-child{font-size:.72rem;color:var(--text-dim);}
+  .gain{margin-top:18px;padding:12px 16px;border-left:2px solid var(--accent);background:rgba(var(--accent-rgb),.06);border-radius:0 8px 8px 0;font-size:.95rem;color:#dbe7f3;}
+  .gain b{color:var(--accent-glow);font-weight:600;}
+
+  @media (max-width: 980px){
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .module-grid,.widget-stage,.item,.features,.principles{grid-template-columns:1fr;}
+    .item:nth-child(even) .copy{order:0;}
+    .roadmap{grid-template-columns:1fr 1fr;}
+    .roadmap::before{display:none;}
+    .room{grid-template-columns:1fr;height:auto;}
+    .room-main{border-right:none;border-bottom:1px solid var(--hairline);min-height:320px;}
+    .topnav{display:none;}
+  }
+  @media (max-width: 600px){
+    .wrap{padding:0 18px;}
+    .item{padding:26px;}
+    .flow,.steps3,.pipeline,.tariffs{grid-template-columns:1fr 1fr;}
+    .roadmap{grid-template-columns:1fr;}
+    .closing{padding:40px 24px;}
+    .hero-meta{gap:24px;}
+  }
+  @media (max-width: 760px){
+    .srow{grid-template-columns:44px 1fr;gap:6px 16px;}
+    .srow > span:last-child{grid-column:2;}
+    .shead{display:none;}
+  }
+  @media print{
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .topbar{display:none;}
+    .hero{min-height:auto;padding:80px 0 140px;}
+    section.block{padding:56px 0;}
+    .item,.panel,.feat,.stat,.mock,.srow,.phase,.closing{break-inside:avoid;page-break-inside:avoid;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    .join-card .go::after{animation:none;}
+    .stat,.feat,.btn{transition:none;}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mic" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3zM5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-mic-off" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M9 9v3a3 3 0 0 0 5.1 2.1M15 10V6a3 3 0 0 0-5.7-1.3M5 11a7 7 0 0 0 11.6 5.3M19 11c0 .7-.1 1.3-.3 1.9M12 18v3M3 3l18 18"/></symbol>
+  <symbol id="i-cam" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M3 7h12v10H3zM15 10l6-3v10l-6-3"/></symbol>
+  <symbol id="i-screen" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M3 4h18v12H3zM8 20h8M12 16v4"/></symbol>
+  <symbol id="i-hand" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11m0-6a1.5 1.5 0 0 1 3 0v6m0-4.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5A6.5 6.5 0 0 1 4 15.5V12a1.5 1.5 0 0 1 3 0"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/></symbol>
+  <symbol id="i-rec" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.5" fill="currentColor"/></symbol>
+  <symbol id="i-door" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M5 21V4h9v17M14 4l5 2v15M11 12h.01"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM2 21a7 7 0 0 1 14 0M17 3.5a4 4 0 0 1 0 7.5M22 21a7 7 0 0 0-4-6.3"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" d="M7 2h10v20H7zM11 18h2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+</svg>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">MYST<span>I</span>C</div>
+    <nav class="topnav">
+      <a href="#ozet">Özet</a>
+      <a href="#bugun">Bugün</a>
+      <a href="#canli">Canlı Eğitim</a>
+      <a href="#gelistirmeler">Geliştirmeler</a>
+      <a href="#yol-haritasi">Yol Haritası</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="horizon" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="client"><i></i>Sınava Bir Gün Kala için hazırlanmıştır</div>
+      <h1 class="display">Platformun<br><em>bir sonraki</em> seviyesi</h1>
+      <p class="sub">Sınava Bir Gün Kala'ya eklenmesini önerdiğimiz yeni özellikler: ne yaptıkları, siteye ne kazandıracakları ve nasıl görünecekleri bu sayfada.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#ozet">Pakette neler var</a>
+        <a class="btn btn-secondary" href="#canli">Canlı Eğitim</a>
+      </div>
+      <div class="hero-meta">
+        <div><b>Hazırlayan</b>MYSTIC · Mustafa Yeşildağ</div>
+        <div><b>Tarih</b>Eylül 2026</div>
+        <div><b>Kapsam</b>Canlı eğitim + 10 yeni özellik</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="ozet">
+  <div class="wrap">
+    <h2 class="headline">Pakette neler var</h2>
+    <p class="lede">Eklenecek her özelliğin ne yaptığı ve siteye ne kazandıracağı, tek bakışta. Satıra tıklayınca ayrıntısına ve nasıl görüneceğine gidersiniz.</p>
+    <div class="summary">
+      <div class="srow shead"><span></span><span>Özellik</span><span>Siteye kazancı</span></div>
+      <a class="srow" href="#canli"><span class="sno">C</span><span><b>Haftalık Canlı Ders</b><small>Her hafta bir öğretmen sitede ücretsiz canlı ders verir; siteye kayıtlı her öğrenci katılabilir.</small></span><span>Yeni öğrenci kazandırır, siteyi tanıtır, öğrenciyle öğretmen arasında bağ kurar.</span></a>
+      <a class="srow" href="#canli"><span class="sno">C</span><span><b>Özel Ders Odası</b><small>Birebir dersler Zoom ya da Meet yerine sitenin içinde, sadece öğretmen ve öğrenciye ait bir odada yapılır.</small></span><span>Dersler site dışına çıkmaz, veli güvenir, link karmaşası biter.</span></a>
+      <a class="srow" href="#m1"><span class="sno">1</span><span><b>Öğretmen Özgeçmiş Profili</b><small>Öğretmen eğitimini, deneyimini ve sertifikalarını kendi panelinden doldurur; profilde güven rozetleri görünür.</small></span><span>Veli öğretmeni tanıyarak seçer; güven ve kayıt oranı artar.</span></a>
+      <a class="srow" href="#m2"><span class="sno">2</span><span><b>Çoklu Branş</b><small>Bir öğretmen birden fazla derste ders verebilir.</small></span><span>Kadro daha verimli kullanılır; öğrenci aynı öğretmenle farklı derslere devam eder.</span></a>
+      <a class="srow" href="#m3"><span class="sno">3</span><span><b>Eğitimde Engel Yok</b><small>Özel gereksinimli öğrenciler için kampanya bölümü ve bu alanda deneyimli öğretmenleri bulma filtresi.</small></span><span>Yeni bir veli kitlesine ulaşılır; siteye güven veren, anlamlı bir fark yaratır.</span></a>
+      <a class="srow" href="#m4"><span class="sno">4</span><span><b>Doğrulanmış Yorumlar</b><small>Sadece gerçekten ders almış öğrenciler yorum yazar; öğretmen puanı gerçek yorumlardan oluşur.</small></span><span>Yeni gelen veliye en güçlü güven kanıtı; site büyüdükçe kendi kendini besler.</span></a>
+      <a class="srow" href="#m5"><span class="sno">5</span><span><b>Ücretsiz Deneme Dersi</b><small>Yeni aile ödeme yapmadan önce öğretmenle tanışır; üç farklı model arasından seçilir.</small></span><span>Kararsız veliyi harekete geçirir, paket satışını artırır.</span></a>
+      <a class="srow" href="#m6"><span class="sno">6</span><span><b>Ders Kayıtları</b><small>Dersler kaydedilir; öğrenci sonradan tekrar izler, canlı derslerin tekrarları sitede durur.</small></span><span>Derslerin değeri artar; öğrenci siteye tekrar tekrar gelir.</span></a>
+      <a class="srow" href="#m7"><span class="sno">7</span><span><b>Aile Hesabı</b><small>Kardeşler tek veli hesabı altında toplanır, ders haklarını ortak kullanır.</small></span><span>Çok çocuklu aileler için cazip; daha büyük paket satışı.</span></a>
+      <a class="srow" href="#m8"><span class="sno">8</span><span><b>Kademeli İndirim ve Kampanyalar</b><small>Öğrenci ne kadar çok saat alırsa saat ücreti o kadar avantajlı olur; dönemsel kampanya kodları.</small></span><span>Öğrenci daha çok ders alır ve siteden ayrılmaz.</span></a>
+      <a class="srow" href="#m9"><span class="sno">9</span><span><b>Öğretmen Başvuru Sistemi</b><small>Öğretmen adayları siteden başvurur; yönetim tek ekrandan değerlendirip kaydeder.</small></span><span>Öğretmen bulmak kolaylaşır; dış sitelere bağımlılık azalır.</span></a>
+      <a class="srow" href="#m10"><span class="sno">10</span><span><b>Yapay Zekâ Destekli Soru Bankası</b><small>LGS'ye hazırlık için öğretmen onaylı sorular, anında çözüm ve eksik konu tespiti.</small></span><span>Öğrenci ders dışında da siteyi kullanır; eksik konudan ders satışına yönlendirir, yeni bir gelir kalemi açar.</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="bugun">
+  <div class="wrap">
+    <h2 class="headline">Bugün neredeyiz</h2>
+    <p class="lede">Sınava Bir Gün Kala bugün uçtan uca çalışan, gerçek ödeme alan, öğretmen ve koç sistemleri oturmuş bir platform. Bu paketteki her kalem, bu temeli yeniden yazmadan, doğrudan üzerine inşa edilecek şekilde tasarlandı.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">20</div><div class="lbl">Kod bilgisi gerektirmeyen yönetim ekranı</div></div>
+      <div class="stat"><div class="num">Canlı</div><div class="lbl">Kredi kartıyla gerçek ödeme altyapısı</div></div>
+      <div class="stat"><div class="num">Anlık</div><div class="lbl">Site içi öğretmen–öğrenci mesajlaşması</div></div>
+      <div class="stat"><div class="num">Tek</div><div class="lbl">Takvim ve randevu merkezi, koçluk sistemiyle birlikte</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="canli">
+  <div class="wrap">
+    <h2 class="headline">Canlı Eğitim Modülü</h2>
+    <p class="lede">Paketin merkezindeki sistem. Dersler artık dışarıdaki bir görüntülü görüşme uygulamasında değil, doğrudan Sınava Bir Gün Kala'nın içinde, kendi geliştirdiğimiz canlı yayın altyapısı üzerinde gerçekleşiyor. Aynı altyapı iki farklı deneyimi taşıyor: herkese açık haftalık canlı ders ve her öğrenciye özel ders odası.</p>
+
+    <div class="module-grid">
+      <div class="panel">
+        <div class="tag">Herkese açık · her hafta</div>
+        <h3 class="title">Haftalık Canlı Ders</h3>
+        <p>Her hafta yönetimin anlaştığı bir öğretmen, belirlenen gün ve saatte, belirli bir sınıf ve ders için canlı yayın yapar. Siteye kayıtlı her öğrenci ücretsiz katılır. Hem gerçek bir ders, hem de platformun en güçlü tanıtımı.</p>
+        <p class="gain"><b>Siteye kazancı:</b> Yeni öğrenci kazandırır, siteyi tanıtır, öğrenciyle öğretmen arasında bağ kurar.</p>
+        <div class="flow">
+          <div><b>10–15 dk</b><span>Tanışma, öğrencileri dinleme</span></div>
+          <div><b>45–60 dk</b><span>Konu anlatımı ve soru çözümü</span></div>
+          <div><b>Tanıtım</b><span>Paketler ve öğretmen kadrosu</span></div>
+          <div><b>Kapanış</b><span>Tekrar izleme sitede açılır</span></div>
+        </div>
+        <ul class="ticks">
+          <li>Sitenin köşesinde kendini gösteren canlı ders penceresi — banner, öğretmen, ders, sınıf ve saat bilgisiyle</li>
+          <li>Yönetim paneli üzerinden tek tıkla açılır, kapanır ve içeriği düzenlenir</li>
+          <li>Planlanmış bir ders yokken pencere bulanık görünür ve "Yapım Aşamasında" yazar</li>
+          <li>Yayın saati geldiğinde pencerede "Yayına Katıl" butonu belirir</li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="tag">Kişisel · her randevu için</div>
+        <h3 class="title">Özel Ders Odası</h3>
+        <p>Öğrencinin öğretmenle planladığı her birebir ders, sadece o ikisine ait kişisel bir odada yapılır. Link aramak, uygulama indirmek yok. Ders yaklaştıkça sistem iki tarafı da hazırlar.</p>
+        <p class="gain"><b>Siteye kazancı:</b> Dersler site dışına çıkmaz, veli güvenir, link karmaşası biter.</p>
+        <ul class="ticks">
+          <li>Ders yaklaştığında öğretmene ve öğrenciye site içi bildirim düşer</li>
+          <li>Dersten 10 dakika önce, ikisinin site içi sohbetinde belirgin bir "Odaya Katıl" kartı belirir</li>
+          <li>Oda yalnızca o dersin öğretmeni ve öğrencisi içindir; ders süresi boyunca açık kalır</li>
+          <li>Öğrenci katıldığı derslerin kayıtlarına daha sonra kendi panelinden ulaşır</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="widget-stage">
+      <div>
+        <div class="mock">
+          <div class="mock-bar"><i></i><i></i><i></i><span>sinavabirgunkala.com</span></div>
+          <div class="fake-page">
+            <div class="ln w60"></div><div class="ln w80"></div><div class="ln w40"></div><div class="ln w80"></div><div class="ln w60"></div>
+            <div class="live-widget">
+              <span class="x">×</span>
+              <div class="banner"><b>8. Sınıf Matematik</b></div>
+              <div class="body">
+                <div class="row"><div class="avatar">SY</div><div class="who">Selda Yurt<small>Çarşamba · 20:00</small></div></div>
+                <div class="countdown"><div><b>02</b><small>saat</small></div><div><b>14</b><small>dk</small></div><div><b>09</b><small>sn</small></div></div>
+                <span class="join">Hatırlat</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-caption">Planlanmış ders: geri sayım, hatırlatma ve saati gelince "Yayına Katıl".</div>
+      </div>
+      <div>
+        <div class="mock">
+          <div class="mock-bar"><i></i><i></i><i></i><span>sinavabirgunkala.com</span></div>
+          <div class="fake-page">
+            <div class="ln w80"></div><div class="ln w40"></div><div class="ln w60"></div><div class="ln w80"></div><div class="ln w40"></div>
+            <div class="live-widget off">
+              <div class="inner">
+                <div class="banner"><b>Canlı Ders</b></div>
+                <div class="body">
+                  <div class="row"><div class="avatar">?</div><div class="who">Öğretmen<small>Gün · Saat</small></div></div>
+                  <div class="countdown"><div><b>--</b><small>saat</small></div><div><b>--</b><small>dk</small></div><div><b>--</b><small>sn</small></div></div>
+                  <span class="join">Katıl</span>
+                </div>
+              </div>
+              <div class="soon">Yapım Aşamasında<small>Yeni canlı ders yakında</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-caption">İçerik girilmemişken pencere bulanık görünür.</div>
+      </div>
+    </div>
+
+    <div class="module-grid" style="align-items:center;">
+      <div>
+        <div class="mock">
+          <div class="room">
+            <div class="room-main">
+              <div class="stage">
+                <span class="share">Ekran paylaşılıyor</span>
+                <div class="sil"></div>
+                <span class="name">Öğretmen · Selda Y.</span>
+              </div>
+              <div class="tiles">
+                <div class="tile speaking"><div class="avatar">EK</div><svg class="mi"><use href="#i-mic"/></svg></div>
+                <div class="tile"><span class="hand">Söz istiyor</span><div class="avatar">ZA</div><svg class="mi off"><use href="#i-mic-off"/></svg></div>
+                <div class="tile"><div class="avatar">BT</div><svg class="mi off"><use href="#i-mic-off"/></svg></div>
+                <div class="tile"><div class="avatar">+24</div></div>
+              </div>
+              <div class="controls">
+                <span class="ctl on"><svg><use href="#i-mic"/></svg></span>
+                <span class="ctl on"><svg><use href="#i-cam"/></svg></span>
+                <span class="ctl on"><svg><use href="#i-screen"/></svg></span>
+                <span class="ctl"><svg><use href="#i-hand"/></svg></span>
+                <span class="ctl"><svg><use href="#i-chat"/></svg></span>
+                <span class="ctl end">Yayını bitir</span>
+              </div>
+            </div>
+            <div class="room-chat">
+              <div class="h">SOHBET · 27 KATILIMCI</div>
+              <div class="msg"><b>Ela K.</b>Oran-orantıda ters orantıyı tekrar anlatır mısınız?</div>
+              <div class="msg q"><b>Zeynep A.</b>Denemedeki 14. soruyu çözebilir miyiz?</div>
+              <div class="msg"><b>Öğretmen</b>Hemen ekrana alıyorum.</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-caption">Canlı ders ekranı: öğretmen öğrencilerin mikrofon ve kamerasını yönetir, ekran paylaşır, sohbetten gelen soruları yanıtlar.</div>
+      </div>
+      <div>
+        <div class="mock chatbox">
+          <div class="chat-head"><div class="avatar">KI</div><div><b>Kerem Işık</b><small>İngilizce · çevrimiçi</small></div></div>
+          <div class="chat-body">
+            <div class="bubble them">Bugünkü derste geçen haftaki kelimelerle başlayalım.</div>
+            <div class="bubble me">Tamam hocam, hazırım.</div>
+            <div class="join-card">
+              <small>Dersiniz 10 dakika içinde başlıyor</small>
+              <b>İngilizce · 18:00–19:00</b>
+              <span class="go">Odaya Katıl</span>
+            </div>
+          </div>
+        </div>
+        <div class="mock-caption" style="text-align:right;">Özel ders: odaya giriş, zaten kullanılan site içi sohbetin içinden.</div>
+      </div>
+    </div>
+
+    <h3 class="title" style="margin-top:80px;">İki deneyimin ortak özellikleri</h3>
+    <div class="features">
+      <div class="feat"><div class="ic"><svg><use href="#i-mic"/></svg></div><h4>Öğretmen kontrolü</h4><p>Öğretmen katılımcıların mikrofonunu ve kamerasını açıp kapatır, kendi kamerasını yönetir.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-screen"/></svg></div><h4>Ekran paylaşımı</h4><p>Konu anlatımı, soru çözümü ve sunumlar tek tıkla ekrana gelir.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-chat"/></svg></div><h4>Canlı sohbet ve soru-cevap</h4><p>Öğrenciler yazarak soru sorar; öğretmen soruları takip edip yanıtlar.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-phone"/></svg></div><h4>Telefon numarası gizliliği</h4><p>Katılım isim ve telefonla yapılır. Numarayı yalnızca yönetim ve dersin öğretmeni görür.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-bell"/></svg></div><h4>Akıllı bildirimler</h4><p>Yaklaşan ders, başlayan yayın ve yeni tekrar kayıtları için site içi bildirimler.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-rec"/></svg></div><h4>Otomatik kayıt</h4><p>Dersler kaydedilir; tekrarlar sitenin içinden izlenir. Kayıt, veli onayıyla yapılır.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-hand"/></svg></div><h4>Söz isteme</h4><p>Kalabalık derste öğrenci "el kaldırır", öğretmen sırayla söz verir. Tanışma bölümünü düzenli tutar.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-door"/></svg></div><h4>Bekleme salonu</h4><p>Öğrenciler yayın başlamadan önce bekleme alanına girer; öğretmen hazır olduğunda ders başlar.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-chart"/></svg></div><h4>Katılım raporu</h4><p>Haftalık derse kimlerin katıldığı yönetime raporlanır. Bu liste yeni paket satışları için çok değerli.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-shield"/></svg></div><h4>Güvenli giriş</h4><p>Her katılımcı kendine özel, kısa süreli bir bağlantıyla girer. Bağlantı başkasına iletilse bile işe yaramaz.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-users"/></svg></div><h4>Sohbet moderasyonu</h4><p>Öğretmen ve yönetim uygunsuz mesajları kaldırabilir, gerekirse katılımcıyı dersten çıkarabilir.</p></div>
+      <div class="feat plus"><div class="ic"><svg><use href="#i-lock"/></svg></div><h4>Yedek bağlantı</h4><p>Beklenmedik bir kesintide ders kaybolmasın diye odada her zaman bir yedek bağlantı seçeneği bulunur.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="gelistirmeler">
+  <div class="wrap">
+    <h2 class="headline">Platform geliştirmeleri</h2>
+    <p class="lede">Canlı eğitimin yanında platformun her köşesini güçlendiren on geliştirme. Her biri tek başına da değer üretiyor; birlikte ele alındığında veliye güven veren, öğrenciyi platformda tutan ve yönetime yeni gelir kanalları açan bir bütün oluşturuyor.</p>
+    <p class="mock-caption" style="margin-top:14px;">Görsellerdeki isimler ve veriler temsilidir.</p>
+
+    <div class="items">
+
+      <article class="item" id="m1">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">1</span><h3 class="title">Detaylı öğretmen özgeçmiş profili</h3></div>
+          <p class="value">Öğretmen profili tek bir tanıtım yazısından, veli için gerçek bir güven sayfasına dönüşüyor. Öğretmenler bu sayfayı kendi panellerinden, yönetime ihtiyaç duymadan doldurur ve günceller.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Veli öğretmeni tanıyarak seçer; güven ve kayıt oranı artar.</p>
+          <ul class="ticks">
+            <li>Eğitim geçmişi, iş deneyimi, sertifikalar, beceriler ve konuşulan diller ayrı ayrı bölümlerde</li>
+            <li>Öğretim yaklaşımı ile ilgi alanları; öğretmeni tanınır ve yakın kılan bir dokunuş</li>
+            <li>Canlı güven rozetleri: "Son 7 günde 6 randevu", "2 yıldır bizimle", tamamlanan ders sayısı</li>
+            <li>Profil Hakkında, Özgeçmiş, Müsaitlik ve Yorumlar olarak düzenli sekmelere ayrılır</li>
+          </ul>
+          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Öğretmen</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="prof-top"><div class="avatar">EK</div><div><b>Elif Kaya<span class="check"></span></b><small>Türkçe · 5–8. Sınıf</small></div></div>
+          <div class="chips" style="margin-top:14px;">
+            <span class="chip acc">Son 7 günde 6 randevu</span><span class="chip">2 yıldır bizimle</span><span class="chip">142 ders</span>
+          </div>
+          <div class="tabs"><span>Hakkında</span><span class="on">Özgeçmiş</span><span>Müsaitlik</span><span>Yorumlar</span></div>
+          <div class="timeline">
+            <div class="tl">Türkçe Öğretmenliği, Lisans<small>Hacettepe Üniversitesi · 2016–2020</small></div>
+            <div class="tl">Ortaokul Türkçe Öğretmeni<small>Özel okul · 2020–devam ediyor</small></div>
+            <div class="tl">LGS Paragraf ve Dil Bilgisi Atölyesi<small>Sertifika · 2023</small></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" id="m2">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">2</span><h3 class="title">Çoklu branş</h3></div>
+          <p class="value">Birden fazla derste uzman olan öğretmenler artık hepsini tek profilde sunabiliyor. Öğrenci aynı öğretmenle farklı derslere devam edebiliyor, yönetim ise kadroyu daha verimli kullanıyor.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Kadro daha verimli kullanılır; öğrenci aynı öğretmenle farklı derslere devam eder.</p>
+          <ul class="ticks">
+            <li>Her öğretmene birden fazla branş, her branş için ayrı sınıf aralığı</li>
+            <li>Öğretmen filtresi, "Randevu Al" sihirbazı ve paket planlayıcısı tüm branşları tanır</li>
+            <li>Randevu sırasında öğrenci hangi ders için geldiğini seçer, öğretmen ona göre hazırlanır</li>
+          </ul>
+          <div class="who-tags"><span>Öğrenci</span><span>Öğretmen</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="prof-top"><div class="avatar">MA</div><div><b>Murat Aslan</b><small>5–8. Sınıf</small></div></div>
+          <div class="chips" style="margin-top:14px;"><span class="chip fill">Matematik</span><span class="chip acc">Fen Bilimleri</span><span class="chip acc">LGS Deneme Analizi</span></div>
+          <div class="select-prev"><span>Hangi ders için randevu?</span><b>Fen Bilimleri ▾</b></div>
+        </div>
+      </article>
+
+      <article class="item" id="m3">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">3</span><h3 class="title">Eğitimde engel yok</h3></div>
+          <p class="value">Özel gereksinimli öğrenciler ve aileleri için görünür, sıcak ve güven veren bir alan. Sitenin ön yüzünde kendini gösteren bir kampanya ve bu öğrencilerle deneyimi olan öğretmenleri bulmayı kolaylaştıran bir yapı.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Yeni bir veli kitlesine ulaşılır; siteye güven veren, anlamlı bir fark yaratır.</p>
+          <ul class="ticks">
+            <li>Anasayfada "Eğitimde Engel Yok" kampanya bölümü ve ailelere özel bir tanıtım sayfası</li>
+            <li>Öğretmenler deneyimli oldukları alanları işaretler: DEHB, disleksi, otizm spektrumu, sınav kaygısı ve diğerleri</li>
+            <li>Öğretmenler sayfasında bu deneyime göre filtreleme</li>
+            <li>Aileden alınan sağlık bilgisi gibi hassas bilgiler velinin onayıyla alınır ve yalnızca dersin öğretmeni görebilir</li>
+          </ul>
+          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="campaign"><b>Eğitimde Engel Yok</b><small>Her öğrencinin öğrenme yolu farklı. Ona uygun öğretmeni birlikte bulalım.</small></div>
+          <div class="chips" style="margin-top:14px;justify-content:center;"><span class="chip acc">DEHB</span><span class="chip acc">Disleksi</span><span class="chip">Otizm spektrumu</span><span class="chip">Sınav kaygısı</span></div>
+        </div>
+      </article>
+
+      <article class="item" id="m4">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">4</span><h3 class="title">Doğrulanmış öğrenci yorumları</h3></div>
+          <p class="value">Her öğretmenin profilinde, yalnızca o öğretmenden gerçekten ders almış öğrencilerin yazabildiği bir yorum sayfası. Puanlar yorumlarla birlikte canlı olarak güncellenir, platform büyüdükçe kendi kendini besleyen bir güven katmanı oluşur.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Yeni gelen veliye en güçlü güven kanıtı; site büyüdükçe kendi kendini besler.</p>
+          <ul class="ticks">
+            <li>Yorum hakkı yalnızca tamamlanmış dersten sonra açılır; her ders için bir yorum</li>
+            <li>Öğretmen puanı gerçek yorumlardan otomatik hesaplanır</li>
+            <li>Ders sonrası öğrenciye nazik bir yorum hatırlatması</li>
+            <li>Yönetim yorumları yayına almadan önce inceleyebilir, öğretmen yanıt verebilir</li>
+          </ul>
+          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Öğretmen</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="rating">
+            <div><div class="big">4,9</div><div class="stars">★★★★★</div><small class="muted" style="font-size:.66rem;">38 doğrulanmış yorum</small></div>
+            <div class="bars">
+              <div>5<i style="--w:86%"></i></div><div>4<i style="--w:10%"></i></div><div>3<i style="--w:3%"></i></div><div>2<i style="--w:1%"></i></div><div>1<i style="--w:0%"></i></div>
+            </div>
+          </div>
+          <div class="review"><div class="top"><b>Ela K.</b><small>Doğrulanmış öğrenci · 12 ders</small></div>Paragraf sorularında çok zorlanıyordum. Üç dersin sonunda denemedeki netim ilk kez 17'ye çıktı.</div>
+        </div>
+      </article>
+
+      <article class="item" id="m5">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">5</span><h3 class="title">Ücretsiz deneme dersi</h3></div>
+          <p class="value">Yeni gelen bir ailenin kart bilgisi vermeden önce öğretmenle tanışabilmesi. Dönüşümü en çok artıran yöntemlerden biri; doğru kurgulanmazsa maliyet yaratabileceği için üç farklı modelle değerlendirilmeli.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Kararsız veliyi harekete geçirir, paket satışını artırır.</p>
+          <div class="steps3" style="margin-top:20px;">
+            <div><b>A</b>30 dakikalık birebir ücretsiz tanışma dersi</div>
+            <div><b>B</b>İlk derse özel indirimli fiyat</div>
+            <div><b>C</b>Haftalık canlı ders, ücretsiz deneme yerine geçer</div>
+          </div>
+          <div class="who-tags"><span>Veli</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="procon">
+            <div><h5>ARTILARI</h5><ul><li>Kararsız aileyi harekete geçirir</li><li>Öğretmen–öğrenci uyumu baştan test edilir</li><li>Pakete geçiş oranı ölçülebilir</li><li>Rakip platformlarla aynı seviyede bir teklif</li></ul></div>
+            <div class="con"><h5>DİKKAT EDİLECEKLER</h5><ul><li>Öğretmenin ücretsiz dersteki emeği nasıl karşılanacak</li><li>Aynı kişinin tekrar tekrar deneme alması engellenmeli</li><li>Katılmayan randevular öğretmen saatini boşa harcar</li><li>30 dakikalık saatler takvime ayrıca eklenmeli</li></ul></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" id="m6">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">6</span><h3 class="title">Ders kayıtları ve canlı yayın tekrarları</h3></div>
+          <p class="value">Canlı eğitim modülüyle birlikte her ders bir kaynağa dönüşüyor. Öğrenci kendi özel derslerini sınav öncesinde yeniden izleyebiliyor, haftalık canlı derslerin tekrarları sitede herkese açık bir arşiv oluşturuyor.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Derslerin değeri artar; öğrenci siteye tekrar tekrar gelir.</p>
+          <ul class="ticks">
+            <li>Özel ders kayıtları yalnızca o öğrenci, öğretmeni ve yönetim tarafından izlenebilir</li>
+            <li>Haftalık canlı ders tekrarları kayıtlı tüm üyelere açık bir kütüphanede</li>
+            <li>Kayıt öncesi veli onayı, odada "kayıt yapılıyor" göstergesi, belirli süre sonunda otomatik silme</li>
+            <li>Videolar sitenin kendi sisteminde durur; YouTube gibi dış platformlara yüklenmez</li>
+          </ul>
+          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="rec">
+            <div class="rec-row"><span class="play"></span><div>Oran-Orantı · Selda Y.<small>24 Eylül · 58 dk</small></div><span class="chip">Özel ders</span></div>
+            <div class="rec-row"><span class="play"></span><div>Paragrafta Ana Fikir · Elif K.<small>21 Eylül · 60 dk</small></div><span class="chip">Özel ders</span></div>
+            <div class="rec-row"><span class="play"></span><div>Haftalık Canlı Ders · Üslü Sayılar<small>18 Eylül · 72 dk</small></div><span class="chip acc">Canlı tekrar</span></div>
+          </div>
+          <div class="lock"><svg><use href="#i-lock"/></svg>Özel derslerini yalnızca sen ve öğretmenin görebilirsiniz.</div>
+        </div>
+      </article>
+
+      <article class="item" id="m7">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">7</span><h3 class="title">Aile hesabı ve ortak ders hakkı</h3></div>
+          <p class="value">Evde birden fazla çocuğu olan aileler için tek hesap, tek ödeme, ortak ders hakkı. Veli tüm çocuklarının derslerini ve ilerlemesini tek bir yerden takip ediyor.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Çok çocuklu aileler için cazip; daha büyük paket satışı.</p>
+          <ul class="ticks">
+            <li>Veli hesabının altında her çocuk için ayrı öğrenci profili; ders geçmişleri birbirine karışmaz</li>
+            <li>Satın alınan ders hakları ailenin ortak havuzunda; hangi çocuğun kullanacağına veli karar verir</li>
+            <li>Veli paneli: yaklaşan dersler, kayıtlar, öğretmen notları ve harcama özeti</li>
+            <li>Kötüye kullanıma karşı profil sınırı ve doğrulama</li>
+          </ul>
+          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="family">
+            <div class="fam-parent"><div class="avatar">AY</div><div><b>Ayşe Y.</b> · Veli hesabı</div></div>
+            <div class="fam-kids">
+              <div class="fam-kid"><div class="avatar">EY</div><div>Emir<small>8. Sınıf · 3 ders</small></div></div>
+              <div class="fam-kid"><div class="avatar">DY</div><div>Defne<small>6. Sınıf · 2 ders</small></div></div>
+            </div>
+            <div class="meter">Ailenin ortak ders hakkı · <b>5 / 8 kaldı</b><div class="track"><i></i></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" id="m8">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">8</span><h3 class="title">Kademeli indirim ve kampanyalar</h3></div>
+          <p class="value">Ders başına sabit fiyat yerine, öğrenci öğretmeniyle devam ettikçe kazanan bir sistem. Daha çok saat, daha avantajlı saatlik ücret. Öğrencinin platformda kalma nedeni çoğalıyor.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Öğrenci daha çok ders alır ve siteden ayrılmaz.</p>
+          <ul class="ticks">
+            <li>Aynı anda alınan saat arttıkça kademeli indirim; oranlar yönetim panelinden belirlenir</li>
+            <li>Aynı öğretmenle devam eden öğrenciye sadakat avantajı</li>
+            <li>Dönemsel kampanyalar ve indirim kodları: başlangıç–bitiş tarihi, kullanım sınırı</li>
+            <li>İndirim, ödeme ekranında anında ve şeffaf şekilde gösterilir</li>
+          </ul>
+          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="ladder">
+            <div class="rung"><span>1 saat</span><b>Standart</b></div>
+            <div class="rung"><span>3 saat</span><b>%5</b></div>
+            <div class="rung"><span>6 saat</span><b>%10</b></div>
+            <div class="rung"><span>10 saat ve üzeri</span><b>%15</b></div>
+          </div>
+          <div class="code"><span>Kampanya kodu</span><b>EKIM15</b></div>
+          <div class="mock-caption" style="margin-top:8px;">Oranlar örnektir, yönetim panelinden belirlenir.</div>
+        </div>
+      </article>
+
+      <article class="item" id="m9">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">9</span><h3 class="title">Öğretmen başvuru sistemi</h3></div>
+          <p class="value">Platform büyüdükçe öğretmen adayları doğrudan siteye başvurabiliyor. Başvurular tek bir ekranda toplanıyor; yönetim değerlendiriyor, uygun bulduğu adayla iletişime geçip onu tek tıkla öğretmen olarak kaydediyor.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Öğretmen bulmak kolaylaşır; dış sitelere bağımlılık azalır.</p>
+          <ul class="ticks">
+            <li>"Öğretmenimiz Olun" sayfası: branş, sınıf, eğitim, deneyim, özgeçmiş dosyası ve isteğe bağlı tanıtım videosu</li>
+            <li>Yönetim panelinde başvuru ekranı: Yeni, İnceleniyor, Görüşme, Onaylandı aşamaları ve notlar</li>
+            <li>Onaylanan adayın bilgileriyle öğretmen hesabı hazır gelir</li>
+            <li>Adayların bilgileri KVKK'ya uygun saklanır, sahte başvurular engellenir</li>
+          </ul>
+          <div class="who-tags"><span>Yönetim</span><span>Öğretmen adayı</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="form-prev"><div class="field">Ad Soyad</div><div class="field">Branşlar · Matematik, Fen Bilimleri</div><div class="field">Özgeçmiş (PDF) yüklendi</div></div>
+          <div class="pipeline">
+            <div class="col"><h6>YENİ</h6><div class="card-s">Merve A.<small>İngilizce</small></div><div class="card-s">Burak T.<small>Matematik</small></div></div>
+            <div class="col"><h6>İNCELENİYOR</h6><div class="card-s">Seda K.<small>Türkçe</small></div></div>
+            <div class="col"><h6>GÖRÜŞME</h6><div class="card-s">Can D.<small>Fen Bilimleri</small></div></div>
+            <div class="col"><h6>ONAYLANDI</h6><div class="card-s">Elif S.<small>Sosyal Bilgiler</small></div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" id="m10">
+        <div class="copy">
+          <div class="item-head"><span class="item-no">10</span><h3 class="title">Yapay zekâ destekli soru bankası</h3></div>
+          <p class="value">LGS'ye hazırlanan öğrenci için dersler arasında da çalışabileceği akıllı bir soru bankası. Sorular yapay zekâ desteğiyle üretilir, öğretmen onayından geçmeden yayına alınmaz. Öğrencinin eksik konuları tespit edilir ve o konuda ders verebilecek öğretmene yönlendirilir.</p>
+          <p class="gain"><b>Siteye kazancı:</b> Öğrenci ders dışında da siteyi kullanır; eksik konudan ders satışına yönlendirir, yeni bir gelir kalemi açar.</p>
+          <ul class="ticks">
+            <li>Ders, sınıf ve konuya göre testler; LGS formatında karma denemeler ve süreli mod</li>
+            <li>Her sorunun anında çözümü ve açıklaması</li>
+            <li>Konu bazlı başarı haritası ve veliye gelişim raporu</li>
+            <li>Eksik konu tespiti: "Bu konuda bir öğretmenden destek al"</li>
+          </ul>
+          <div class="tariffs">
+            <div><b>Paketlere dahil</b>Ders hakkıyla birlikte test erişimi</div>
+            <div><b>Günlük ücretsiz</b>Kayıtlı her üyeye sınırlı test</div>
+            <div><b>Premium</b>Aylık sınırsız soru bankası</div>
+          </div>
+          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
+        </div>
+        <div class="mock mini">
+          <div class="quiz-q"><span class="chip acc" style="margin-bottom:8px;">8. Sınıf · Matematik · Oran-Orantı</span><br>4 işçi bir işi 12 günde bitiriyor. Aynı işi 6 işçi kaç günde bitirir?</div>
+          <div class="opts">
+            <div class="opt wrong">A) 18 gün</div>
+            <div class="opt right">B) 8 gün <span>✓</span></div>
+            <div class="opt">C) 6 gün</div>
+            <div class="opt">D) 10 gün</div>
+          </div>
+          <div class="explain">İşçi sayısı ile süre ters orantılıdır: 4 × 12 = 6 × x, dolayısıyla x = 8.</div>
+          <div class="suggest"><span>Ters orantıda 3 hatan var</span><b>Öğretmenden destek al →</b></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="block" id="yol-haritasi">
+  <div class="wrap">
+    <h2 class="headline">Önerilen yol haritası</h2>
+    <p class="lede">Kalemler birbirine bağlı olacak şekilde dört aşamada ele alınabilir. İlk aşama kısa sürede görünür sonuç verir; canlı eğitim ise kendi altyapı hazırlığıyla birlikte ayrı bir aşama olarak ilerler.</p>
+    <div class="roadmap">
+      <div class="phase">
+        <div class="k">Aşama 1</div>
+        <h4>Güven ve görünürlük</h4>
+        <p>Profil, yorum ve başvuru sistemleri; platformun vitrini güçlenir.</p>
+        <div class="chips"><span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">4</span><span class="chip">9</span></div>
+      </div>
+      <div class="phase">
+        <div class="k">Aşama 2</div>
+        <h4>Gelir ve sadakat</h4>
+        <p>Deneme dersi, aile hesabı ve kademeli indirim; dönüşüm ve tekrar alım artar.</p>
+        <div class="chips"><span class="chip">5</span><span class="chip">7</span><span class="chip">8</span></div>
+      </div>
+      <div class="phase">
+        <div class="k">Aşama 3</div>
+        <h4>Canlı eğitim</h4>
+        <p>Canlı yayın altyapısı, haftalık canlı ders, özel ders odası ve kayıtlar.</p>
+        <div class="chips"><span class="chip acc">Modül</span><span class="chip">6</span></div>
+      </div>
+      <div class="phase">
+        <div class="k">Aşama 4</div>
+        <h4>Akıllı öğrenme</h4>
+        <p>Yapay zekâ destekli soru bankası ve eksik konudan öğretmene yönlendirme.</p>
+        <div class="chips"><span class="chip">10</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <h2 class="headline">Tasarım ilkelerimiz</h2>
+    <div class="principles">
+      <div class="feat"><div class="ic"><svg><use href="#i-shield"/></svg></div><h4>Önce güvenlik</h4><p>Tüm yeni sistemlerde ödeme tutarları, indirimler ve ders hakları sistem tarafından hesaplanır; kullanıcı tarafından değiştirilemez.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-lock"/></svg></div><h4>Çocuk verisine özen</h4><p>Kullanıcıların büyük kısmı reşit değil. Kayıt ve özel bilgiler veli onayıyla, KVKK'ya uygun şekilde işlenir.</p></div>
+      <div class="feat"><div class="ic"><svg><use href="#i-chart"/></svg></div><h4>Yönetim kontrolde</h4><p>Her yeni sistem kendi yönetim ekranıyla gelir. İçerik, oran ve ayarlar kod bilgisi gerektirmeden değiştirilir.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="wrap">
+    <div class="closing">
+      <h2>Bir sonraki adım</h2>
+      <p>Hangi özelliklerle başlamak istediğinizi birlikte belirleyelim. Onaylanan her özellik için ayrıntılı iş planı ve takvim ayrıca paylaşılacak.</p>
+      <div class="cta-row" style="justify-content:center;"><a class="btn btn-primary" href="#ozet">Özete dön</a></div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <div><b>MYSTIC</b><div style="margin-top:6px;">Mustafa Yeşildağ · mustafayesilldag.github.io</div></div>
+    <div>Sınava Bir Gün Kala · Geliştirme Paketi · Eylül 2026</div>
+  </div>
+</footer>
+
+</body>
+</html>
