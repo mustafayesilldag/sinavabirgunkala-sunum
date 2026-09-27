@@ -278,7 +278,6 @@
     transition:border-color .35s;
   }
   .item:hover{border-color:rgba(var(--accent-rgb),.35);}
-  .item:nth-child(even) .copy{order:2;}
   .item-head{display:flex;align-items:baseline;gap:16px;}
   .item-no{
     font-family:var(--font-display);font-size:1.25rem;font-weight:700;color:var(--accent-glow);
@@ -423,7 +422,6 @@
   @media (max-width: 980px){
     .stats{grid-template-columns:repeat(2,1fr);}
     .module-grid,.widget-stage,.item,.features,.principles{grid-template-columns:1fr;}
-    .item:nth-child(even) .copy{order:0;}
     .roadmap{grid-template-columns:1fr 1fr;}
     .roadmap::before{display:none;}
     .room{grid-template-columns:1fr;height:auto;}
@@ -455,6 +453,82 @@
     .join-card .go::after{animation:none;}
     .stat,.feat,.btn{transition:none;}
   }
+
+  /* ---------- Madde yerleşimleri ---------- */
+  .item{position:relative;}
+  .item .visual{min-width:0;}
+  .item.v-left .copy{order:2;}
+  .item.v-top,.item.v-bottom,.item.v-none{grid-template-columns:1fr;}
+  .item.v-top .visual{order:-1;}
+  .item.v-none .visual{display:none;}
+  .item.v-top .copy,.item.v-bottom .copy{max-width:760px;}
+  .boxes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:16px;}
+  .boxes div{border:1px solid var(--hairline);border-radius:8px;padding:10px 12px;font-size:.78rem;line-height:1.45;color:var(--text-muted);}
+  .boxes b{display:block;font-size:.82rem;margin-bottom:3px;color:var(--text-main);}
+
+  /* Fotoğraf çerçeveleri */
+  .shot{margin:0;}
+  .shot img{display:block;width:100%;height:auto;}
+  .shot.f-kart .pic{background:#050a12;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;}
+  .shot.f-tarayici .pic{background:#050a12;border:1px solid var(--hairline);border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.45);}
+  .shot.f-yok img{border-radius:10px;}
+  .shot.f-parlak .pic{border:1px solid rgba(var(--accent-rgb),.45);border-radius:12px;overflow:hidden;box-shadow:0 0 34px rgba(var(--accent-rgb),.22);}
+  .shot figcaption{margin-top:12px;font-size:.8rem;color:var(--text-dim);}
+  .v-top .shot figcaption,.v-bottom .shot figcaption{text-align:center;}
+
+  /* ---------- Düzenleme modu ---------- */
+  .ed-on .item{outline:1px dashed transparent;outline-offset:6px;transition:outline-color .2s,border-color .35s;}
+  .ed-on .item:hover{outline-color:rgba(var(--accent-rgb),.35);}
+  .ed-on .item.is-hidden{opacity:.38;}
+  .ed-on .item.is-editing{outline:1px solid var(--accent);}
+  .ed-tools{position:absolute;top:12px;right:12px;z-index:5;display:flex;gap:4px;padding:4px;border-radius:8px;background:rgba(3,5,9,.88);border:1px solid var(--hairline);}
+  .ed-tools button,.ed-btn{font:500 .74rem var(--font-body);color:var(--text-main);background:transparent;border:1px solid transparent;border-radius:5px;padding:6px 10px;cursor:pointer;transition:background .2s,border-color .2s,color .2s;}
+  .ed-tools button:hover,.ed-btn:hover{background:rgba(var(--accent-rgb),.12);border-color:rgba(var(--accent-rgb),.35);}
+  .ed-tools button:disabled{opacity:.3;cursor:default;background:none;border-color:transparent;}
+  .ed-tools .danger:hover{background:rgba(255,90,90,.12);border-color:rgba(255,90,90,.4);color:#ffb3b3;}
+  .ed-flag{position:absolute;top:18px;left:18px;font-size:.66rem;font-weight:600;letter-spacing:.06em;color:var(--text-muted);border:1px solid var(--hairline);border-radius:20px;padding:2px 9px;}
+
+  .ed-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;
+    max-width:calc(100vw - 24px);padding:8px;border-radius:10px;background:rgba(6,11,20,.94);border:1px solid rgba(var(--accent-rgb),.4);box-shadow:0 10px 40px rgba(0,0,0,.5),0 0 24px rgba(var(--accent-rgb),.15);backdrop-filter:blur(8px);}
+  .ed-bar .lbl{font-size:.72rem;font-weight:600;letter-spacing:.06em;color:var(--accent-glow);padding:0 10px;}
+  .ed-bar .state{font-size:.72rem;color:var(--text-muted);padding:0 8px;}
+  .ed-bar .state.dirty{color:#ffd28a;}
+  .ed-btn.primary{background:var(--accent);color:#fff;}
+  .ed-btn.primary:hover{background:var(--accent-glow);color:#031020;}
+  .ed-btn.line{border-color:var(--hairline);}
+
+  .ed-drawer{position:fixed;top:0;right:0;bottom:0;z-index:70;width:min(440px,100vw);background:var(--bg-2);border-left:1px solid rgba(var(--accent-rgb),.3);
+    box-shadow:-20px 0 60px rgba(0,0,0,.5);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .35s var(--ease-out);}
+  .ed-drawer.open{transform:none;}
+  .ed-drawer header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--hairline);}
+  .ed-drawer header b{font-family:var(--font-display);font-size:1.4rem;font-weight:600;}
+  .ed-form{flex:1;overflow-y:auto;padding:8px 22px 40px;}
+  .ed-sec{padding:18px 0;border-bottom:1px solid var(--hairline);}
+  .ed-sec:last-child{border-bottom:none;}
+  .ed-sec > h5{font-size:.68rem;font-weight:600;letter-spacing:.08em;color:var(--accent-glow);margin-bottom:12px;}
+  .ed-f{display:block;margin-bottom:12px;}
+  .ed-f > span{display:block;font-size:.74rem;color:var(--text-muted);margin-bottom:5px;}
+  .ed-f > small{display:block;font-size:.68rem;color:var(--text-dim);margin-top:4px;}
+  .ed-f input[type=text],.ed-f textarea,.ed-f select{width:100%;font:400 .86rem/1.5 var(--font-body);color:var(--text-main);background:#050a12;border:1px solid var(--hairline);border-radius:6px;padding:8px 10px;transition:border-color .2s;}
+  .ed-f textarea{resize:vertical;min-height:70px;}
+  .ed-f input:focus,.ed-f textarea:focus,.ed-f select:focus{outline:none;border-color:rgba(var(--accent-rgb),.6);}
+  .ed-seg{display:flex;flex-wrap:wrap;gap:6px;}
+  .ed-seg button{font:500 .74rem var(--font-body);color:var(--text-muted);background:#050a12;border:1px solid var(--hairline);border-radius:6px;padding:7px 11px;cursor:pointer;}
+  .ed-seg button[aria-pressed=true]{color:var(--text-main);border-color:var(--accent);background:rgba(var(--accent-rgb),.14);}
+  .ed-layouts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .ed-layouts button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;background:#050a12;border:1px solid var(--hairline);border-radius:8px;cursor:pointer;color:var(--text-muted);font:500 .7rem var(--font-body);}
+  .ed-layouts button[aria-pressed=true]{border-color:var(--accent);color:var(--text-main);background:rgba(var(--accent-rgb),.12);}
+  .ed-layouts svg{width:54px;height:36px;}
+  .ed-drop{display:flex;align-items:center;justify-content:center;text-align:center;min-height:96px;padding:14px;border:1px dashed rgba(var(--accent-rgb),.45);border-radius:8px;font-size:.78rem;color:var(--text-muted);cursor:pointer;background:#050a12;background-size:cover;background-position:center;position:relative;}
+  .ed-drop.has{min-height:150px;color:transparent;}
+  .ed-drop.over{border-color:var(--accent-glow);background-color:rgba(var(--accent-rgb),.08);}
+  .ed-note{font-size:.72rem;color:var(--text-dim);line-height:1.5;}
+  .ed-toast{position:fixed;left:50%;bottom:84px;transform:translate(-50%,10px);z-index:80;opacity:0;pointer-events:none;font-size:.8rem;padding:9px 16px;border-radius:8px;background:var(--bg-3);border:1px solid rgba(var(--accent-rgb),.45);transition:opacity .25s,transform .25s var(--ease-out);}
+  .ed-toast.show{opacity:1;transform:translate(-50%,0);}
+  @media (max-width: 980px){ .item.v-left .copy{order:0;} }
+  @media print{ .ed-bar,.ed-drawer,.ed-tools,.ed-flag{display:none !important;} }
+  .ed-preview .ed-tools,.ed-preview .ed-flag,.ed-preview .item.is-hidden{display:none;}
+  .ed-preview .item{outline:none !important;}
 </style>
 </head>
 <body>
@@ -503,7 +577,7 @@
       <div class="hero-meta">
         <div><b>Hazırlayan</b>MYSTIC · Mustafa Yeşildağ</div>
         <div><b>Tarih</b>Eylül 2026</div>
-        <div><b>Kapsam</b>Canlı eğitim + 9 yeni özellik</div>
+        <div><b>Kapsam</b>Canlı eğitim + <span data-sayi>9</span> yeni özellik</div>
       </div>
     </div>
   </div>
@@ -513,19 +587,10 @@
   <div class="wrap">
     <h2 class="headline">Pakette neler var</h2>
     <p class="lede">Eklenecek her özelliğin ne yaptığı ve siteye ne kazandıracağı, tek bakışta. Satıra tıklayınca ayrıntısına ve nasıl görüneceğine gidersiniz.</p>
-    <div class="summary">
+    <div class="summary" id="ozet-liste">
       <div class="srow shead"><span></span><span>Özellik</span><span>Siteye kazancı</span></div>
       <a class="srow" href="#canli"><span class="sno">C</span><span><b>Haftalık Canlı Ders</b><small>Her hafta bir öğretmen sitede ücretsiz canlı ders verir; siteye kayıtlı her öğrenci katılabilir.</small></span><span>Yeni öğrenci kazandırır, siteyi tanıtır, öğrenciyle öğretmen arasında bağ kurar.</span></a>
       <a class="srow" href="#canli"><span class="sno">C</span><span><b>Özel Ders Odası</b><small>Birebir dersler Zoom ya da Meet yerine sitenin içinde, sadece öğretmen ve öğrenciye ait bir odada yapılır.</small></span><span>Dersler site dışına çıkmaz, veli güvenir, link karmaşası biter.</span></a>
-      <a class="srow" href="#m1"><span class="sno">1</span><span><b>Öğretmen Özgeçmiş Profili</b><small>Öğretmen eğitimini, deneyimini ve sertifikalarını kendi panelinden doldurur; profilde güven rozetleri görünür.</small></span><span>Veli öğretmeni tanıyarak seçer; güven ve kayıt oranı artar.</span></a>
-      <a class="srow" href="#m2"><span class="sno">2</span><span><b>Çoklu Branş</b><small>Bir öğretmen birden fazla derste ders verebilir.</small></span><span>Kadro daha verimli kullanılır; öğrenci aynı öğretmenle farklı derslere devam eder.</span></a>
-      <a class="srow" href="#m3"><span class="sno">3</span><span><b>Eğitimde Engel Yok</b><small>Özel gereksinimli öğrenciler için kampanya bölümü ve bu alanda deneyimli öğretmenleri bulma filtresi.</small></span><span>Yeni bir veli kitlesine ulaşılır; siteye güven veren, anlamlı bir fark yaratır.</span></a>
-      <a class="srow" href="#m4"><span class="sno">4</span><span><b>Doğrulanmış Yorumlar</b><small>Sadece gerçekten ders almış öğrenciler yorum yazar; öğretmen puanı gerçek yorumlardan oluşur.</small></span><span>Yeni gelen veliye en güçlü güven kanıtı; site büyüdükçe kendi kendini besler.</span></a>
-      <a class="srow" href="#m5"><span class="sno">5</span><span><b>Ders Kayıtları</b><small>Dersler kaydedilir; öğrenci sonradan tekrar izler, canlı derslerin tekrarları sitede durur.</small></span><span>Derslerin değeri artar; öğrenci siteye tekrar tekrar gelir.</span></a>
-      <a class="srow" href="#m6"><span class="sno">6</span><span><b>Aile Hesabı</b><small>Kardeşler tek veli hesabı altında toplanır, ders haklarını ortak kullanır.</small></span><span>Çok çocuklu aileler için cazip; daha büyük paket satışı.</span></a>
-      <a class="srow" href="#m7"><span class="sno">7</span><span><b>Kademeli İndirim ve Kampanyalar</b><small>Öğrenci ne kadar çok saat alırsa saat ücreti o kadar avantajlı olur; dönemsel kampanya kodları.</small></span><span>Öğrenci daha çok ders alır ve siteden ayrılmaz.</span></a>
-      <a class="srow" href="#m8"><span class="sno">8</span><span><b>Video Ders Paketleri</b><small>Öğretmensiz, kendi hızında izlenen hazır video dersler; 10, 20 ya da daha fazla dersten oluşan ayrı paketler halinde satılır.</small></span><span>Canlı ders almak istemeyen öğrenciye de satış yapılır; öğretmen saatine bağlı olmayan, ölçeklenebilir bir gelir kalemi açılır.</span></a>
-      <a class="srow" href="#m9"><span class="sno">9</span><span><b>Yapay Zekâ Destekli Soru Bankası</b><small>LGS'ye hazırlık için öğretmen onaylı sorular, anında çözüm, eksik konu tespiti ve video derslere özel pekiştirme testleri.</small></span><span>Öğrenci ders dışında da siteyi kullanır; eksik konudan ders satışına yönlendirir, yeni bir gelir kalemi açar.</span></a>
     </div>
   </div>
 </section>
@@ -696,232 +761,10 @@
 <section class="block" id="gelistirmeler">
   <div class="wrap">
     <h2 class="headline">Platform geliştirmeleri</h2>
-    <p class="lede">Canlı eğitimin yanında platformun her köşesini güçlendiren dokuz geliştirme. Her biri tek başına da değer üretiyor; birlikte ele alındığında veliye güven veren, öğrenciyi platformda tutan ve yönetime yeni gelir kanalları açan bir bütün oluşturuyor.</p>
+    <p class="lede">Canlı eğitimin yanında platformun her köşesini güçlendiren <span data-sayi-yazi>dokuz</span> geliştirme. Her biri tek başına da değer üretiyor; birlikte ele alındığında veliye güven veren, öğrenciyi platformda tutan ve yönetime yeni gelir kanalları açan bir bütün oluşturuyor.</p>
     <p class="mock-caption" style="margin-top:14px;">Görsellerdeki isimler ve veriler temsilidir.</p>
 
-    <div class="items">
-
-      <article class="item" id="m1">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">1</span><h3 class="title">Detaylı öğretmen özgeçmiş profili</h3></div>
-          <p class="value">Öğretmen profili tek bir tanıtım yazısından, veli için gerçek bir güven sayfasına dönüşüyor. Öğretmenler bu sayfayı kendi panellerinden, yönetime ihtiyaç duymadan doldurur ve günceller.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Veli öğretmeni tanıyarak seçer; güven ve kayıt oranı artar.</p>
-          <ul class="ticks">
-            <li>Eğitim geçmişi, iş deneyimi, sertifikalar, beceriler ve konuşulan diller ayrı ayrı bölümlerde</li>
-            <li>Öğretim yaklaşımı ile ilgi alanları; öğretmeni tanınır ve yakın kılan bir dokunuş</li>
-            <li>Canlı güven rozetleri: "Son 7 günde 6 randevu", "2 yıldır bizimle", tamamlanan ders sayısı</li>
-            <li>Profil Hakkında, Özgeçmiş, Müsaitlik ve Yorumlar olarak düzenli sekmelere ayrılır</li>
-          </ul>
-          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Öğretmen</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="prof-top"><div class="avatar">EK</div><div><b>Elif Kaya<span class="check"></span></b><small>Türkçe · 5–8. Sınıf</small></div></div>
-          <div class="chips" style="margin-top:14px;">
-            <span class="chip acc">Son 7 günde 6 randevu</span><span class="chip">2 yıldır bizimle</span><span class="chip">142 ders</span>
-          </div>
-          <div class="tabs"><span>Hakkında</span><span class="on">Özgeçmiş</span><span>Müsaitlik</span><span>Yorumlar</span></div>
-          <div class="timeline">
-            <div class="tl">Türkçe Öğretmenliği, Lisans<small>Hacettepe Üniversitesi · 2016–2020</small></div>
-            <div class="tl">Ortaokul Türkçe Öğretmeni<small>Özel okul · 2020–devam ediyor</small></div>
-            <div class="tl">LGS Paragraf ve Dil Bilgisi Atölyesi<small>Sertifika · 2023</small></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="item" id="m2">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">2</span><h3 class="title">Çoklu branş</h3></div>
-          <p class="value">Birden fazla derste uzman olan öğretmenler artık hepsini tek profilde sunabiliyor. Öğrenci aynı öğretmenle farklı derslere devam edebiliyor, yönetim ise kadroyu daha verimli kullanıyor.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Kadro daha verimli kullanılır; öğrenci aynı öğretmenle farklı derslere devam eder.</p>
-          <ul class="ticks">
-            <li>Her öğretmene birden fazla branş, her branş için ayrı sınıf aralığı</li>
-            <li>Öğretmen filtresi, "Randevu Al" sihirbazı ve paket planlayıcısı tüm branşları tanır</li>
-            <li>Randevu sırasında öğrenci hangi ders için geldiğini seçer, öğretmen ona göre hazırlanır</li>
-          </ul>
-          <div class="who-tags"><span>Öğrenci</span><span>Öğretmen</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="prof-top"><div class="avatar">MA</div><div><b>Murat Aslan</b><small>5–8. Sınıf</small></div></div>
-          <div class="chips" style="margin-top:14px;"><span class="chip fill">Matematik</span><span class="chip acc">Fen Bilimleri</span><span class="chip acc">LGS Deneme Analizi</span></div>
-          <div class="select-prev"><span>Hangi ders için randevu?</span><b>Fen Bilimleri ▾</b></div>
-        </div>
-      </article>
-
-      <article class="item" id="m3">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">3</span><h3 class="title">Eğitimde engel yok</h3></div>
-          <p class="value">Özel gereksinimli öğrenciler ve aileleri için görünür, sıcak ve güven veren bir alan. Sitenin ön yüzünde kendini gösteren bir kampanya ve bu öğrencilerle deneyimi olan öğretmenleri bulmayı kolaylaştıran bir yapı.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Yeni bir veli kitlesine ulaşılır; siteye güven veren, anlamlı bir fark yaratır.</p>
-          <ul class="ticks">
-            <li>Anasayfada "Eğitimde Engel Yok" kampanya bölümü ve ailelere özel bir tanıtım sayfası</li>
-            <li>Öğretmenler deneyimli oldukları alanları işaretler: DEHB, disleksi, otizm spektrumu, sınav kaygısı ve diğerleri</li>
-            <li>Öğretmenler sayfasında bu deneyime göre filtreleme</li>
-            <li>Aileden alınan sağlık bilgisi gibi hassas bilgiler velinin onayıyla alınır ve yalnızca dersin öğretmeni görebilir</li>
-          </ul>
-          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="campaign"><b>Eğitimde Engel Yok</b><small>Her öğrencinin öğrenme yolu farklı. Ona uygun öğretmeni birlikte bulalım.</small></div>
-          <div class="chips" style="margin-top:14px;justify-content:center;"><span class="chip acc">DEHB</span><span class="chip acc">Disleksi</span><span class="chip">Otizm spektrumu</span><span class="chip">Sınav kaygısı</span></div>
-        </div>
-      </article>
-
-      <article class="item" id="m4">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">4</span><h3 class="title">Doğrulanmış öğrenci yorumları</h3></div>
-          <p class="value">Her öğretmenin profilinde, yalnızca o öğretmenden gerçekten ders almış öğrencilerin yazabildiği bir yorum sayfası. Puanlar yorumlarla birlikte canlı olarak güncellenir, platform büyüdükçe kendi kendini besleyen bir güven katmanı oluşur.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Yeni gelen veliye en güçlü güven kanıtı; site büyüdükçe kendi kendini besler.</p>
-          <ul class="ticks">
-            <li>Yorum hakkı yalnızca tamamlanmış dersten sonra açılır; her ders için bir yorum</li>
-            <li>Öğretmen puanı gerçek yorumlardan otomatik hesaplanır</li>
-            <li>Ders sonrası öğrenciye nazik bir yorum hatırlatması</li>
-            <li>Yönetim yorumları yayına almadan önce inceleyebilir, öğretmen yanıt verebilir</li>
-          </ul>
-          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Öğretmen</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="rating">
-            <div><div class="big">4,9</div><div class="stars">★★★★★</div><small class="muted" style="font-size:.66rem;">38 doğrulanmış yorum</small></div>
-            <div class="bars">
-              <div>5<i style="--w:86%"></i></div><div>4<i style="--w:10%"></i></div><div>3<i style="--w:3%"></i></div><div>2<i style="--w:1%"></i></div><div>1<i style="--w:0%"></i></div>
-            </div>
-          </div>
-          <div class="review"><div class="top"><b>Ela K.</b><small>Doğrulanmış öğrenci · 12 ders</small></div>Paragraf sorularında çok zorlanıyordum. Üç dersin sonunda denemedeki netim ilk kez 17'ye çıktı.</div>
-        </div>
-      </article>
-
-
-      <article class="item" id="m5">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">5</span><h3 class="title">Ders kayıtları ve canlı yayın tekrarları</h3></div>
-          <p class="value">Canlı eğitim modülüyle birlikte her ders bir kaynağa dönüşüyor. Öğrenci kendi özel derslerini sınav öncesinde yeniden izleyebiliyor, haftalık canlı derslerin tekrarları sitede herkese açık bir arşiv oluşturuyor.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Derslerin değeri artar; öğrenci siteye tekrar tekrar gelir.</p>
-          <ul class="ticks">
-            <li>Özel ders kayıtları yalnızca o öğrenci, öğretmeni ve yönetim tarafından izlenebilir</li>
-            <li>Haftalık canlı ders tekrarları kayıtlı tüm üyelere açık bir kütüphanede</li>
-            <li>Kayıt öncesi veli onayı, odada "kayıt yapılıyor" göstergesi, belirli süre sonunda otomatik silme</li>
-            <li>Videolar sitenin kendi sisteminde durur; YouTube gibi dış platformlara yüklenmez</li>
-          </ul>
-          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="rec">
-            <div class="rec-row"><span class="play"></span><div>Oran-Orantı · Selda Y.<small>24 Eylül · 58 dk</small></div><span class="chip">Özel ders</span></div>
-            <div class="rec-row"><span class="play"></span><div>Paragrafta Ana Fikir · Elif K.<small>21 Eylül · 60 dk</small></div><span class="chip">Özel ders</span></div>
-            <div class="rec-row"><span class="play"></span><div>Haftalık Canlı Ders · Üslü Sayılar<small>18 Eylül · 72 dk</small></div><span class="chip acc">Canlı tekrar</span></div>
-          </div>
-          <div class="lock"><svg><use href="#i-lock"/></svg>Özel derslerini yalnızca sen ve öğretmenin görebilirsiniz.</div>
-        </div>
-      </article>
-
-      <article class="item" id="m6">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">6</span><h3 class="title">Aile hesabı ve ortak ders hakkı</h3></div>
-          <p class="value">Evde birden fazla çocuğu olan aileler için tek hesap, tek ödeme, ortak ders hakkı. Veli tüm çocuklarının derslerini ve ilerlemesini tek bir yerden takip ediyor.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Çok çocuklu aileler için cazip; daha büyük paket satışı.</p>
-          <ul class="ticks">
-            <li>Veli hesabının altında her çocuk için ayrı öğrenci profili; ders geçmişleri birbirine karışmaz</li>
-            <li>Satın alınan ders hakları ailenin ortak havuzunda; hangi çocuğun kullanacağına veli karar verir</li>
-            <li>Veli paneli: yaklaşan dersler, kayıtlar, öğretmen notları ve harcama özeti</li>
-            <li>Kötüye kullanıma karşı profil sınırı ve doğrulama</li>
-          </ul>
-          <div class="who-tags"><span>Veli</span><span>Öğrenci</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="family">
-            <div class="fam-parent"><div class="avatar">AY</div><div><b>Ayşe Y.</b> · Veli hesabı</div></div>
-            <div class="fam-kids">
-              <div class="fam-kid"><div class="avatar">EY</div><div>Emir<small>8. Sınıf · 3 ders</small></div></div>
-              <div class="fam-kid"><div class="avatar">DY</div><div>Defne<small>6. Sınıf · 2 ders</small></div></div>
-            </div>
-            <div class="meter">Ailenin ortak ders hakkı · <b>5 / 8 kaldı</b><div class="track"><i></i></div></div>
-          </div>
-        </div>
-      </article>
-
-      <article class="item" id="m7">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">7</span><h3 class="title">Kademeli indirim ve kampanyalar</h3></div>
-          <p class="value">Ders başına sabit fiyat yerine, öğrenci öğretmeniyle devam ettikçe kazanan bir sistem. Daha çok saat, daha avantajlı saatlik ücret. Öğrencinin platformda kalma nedeni çoğalıyor.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Öğrenci daha çok ders alır ve siteden ayrılmaz.</p>
-          <ul class="ticks">
-            <li>Aynı anda alınan saat arttıkça kademeli indirim; oranlar yönetim panelinden belirlenir</li>
-            <li>Aynı öğretmenle devam eden öğrenciye sadakat avantajı</li>
-            <li>Dönemsel kampanyalar ve indirim kodları: başlangıç–bitiş tarihi, kullanım sınırı</li>
-            <li>İndirim, ödeme ekranında anında ve şeffaf şekilde gösterilir</li>
-          </ul>
-          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="ladder">
-            <div class="rung"><span>1 saat</span><b>Standart</b></div>
-            <div class="rung"><span>3 saat</span><b>%5</b></div>
-            <div class="rung"><span>6 saat</span><b>%10</b></div>
-            <div class="rung"><span>10 saat ve üzeri</span><b>%15</b></div>
-          </div>
-          <div class="code"><span>Kampanya kodu</span><b>EKIM15</b></div>
-          <div class="mock-caption" style="margin-top:8px;">Oranlar örnektir, yönetim panelinden belirlenir.</div>
-        </div>
-      </article>
-
-
-      <article class="item" id="m8">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">8</span><h3 class="title">Video ders paketleri</h3></div>
-          <p class="value">Öğretmenden birebir ders almak istemeyen ya da kendi hızında çalışmayı seven öğrenci için hazır video dersler. Dersler konu konu paketlenir; öğrenci 10 derslik, 20 derslik ya da daha kapsamlı bir paketi satın alıp istediği zaman izler. Yapı, çevrim içi kurs mantığıyla genişletilebilecek şekilde kurulur.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Canlı ders almak istemeyen öğrenciye de satış yapılır; öğretmen saatine bağlı olmayan, ölçeklenebilir bir gelir kalemi açılır.</p>
-          <ul class="ticks">
-            <li>Anasayfada kaydırılarak gezilen video ders paketleri vitrini; paket içeriği ve örnek ders önizlemesi</li>
-            <li>Mevcut paket sisteminde ayrı bir paket türü: 10, 20 ya da daha fazla dersten oluşan paketler, yönetim panelinden oluşturulur</li>
-            <li>Kurs mantığı: paket içinde ünite ve ders sırası, öğrencinin kaldığı yer ve ilerleme yüzdesi</li>
-            <li>Her videonun sonunda o derse özel açılan pekiştirme testi; sorular yapay zekâ destekli soru bankasından gelir</li>
-            <li>Videolar sitenin kendi sisteminde durur, yalnızca paketi alan öğrenci izleyebilir</li>
-          </ul>
-          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="meter"><b>LGS Matematik · 10 Video Ders</b><small class="muted" style="display:block;font-size:.66rem;margin-top:2px;">Kendi hızında · Öğretmensiz paket</small><div class="track"><i style="width:40%"></i></div><small class="muted" style="display:block;font-size:.66rem;margin-top:6px;">4 / 10 ders tamamlandı</small></div>
-          <div class="rec" style="margin-top:10px;">
-            <div class="rec-row"><span class="play"></span><div>4. Ders · Oran-Orantı<small>Video ders · 60 dk</small></div><span class="chip">İzlendi</span></div>
-            <div class="rec-row"><span class="play"></span><div>5. Ders · Ters Orantı<small>Video ders · 55 dk</small></div><span class="chip acc">Sıradaki</span></div>
-          </div>
-          <div class="suggest"><span>4. ders için pekiştirme testi hazır · 12 soru</span><b>Teste başla →</b></div>
-        </div>
-      </article>
-
-      <article class="item" id="m9">
-        <div class="copy">
-          <div class="item-head"><span class="item-no">9</span><h3 class="title">Yapay zekâ destekli soru bankası</h3></div>
-          <p class="value">LGS'ye hazırlanan öğrenci için dersler arasında da çalışabileceği akıllı bir soru bankası. Sorular yapay zekâ desteğiyle üretilir, öğretmen onayından geçmeden yayına alınmaz. Öğrencinin eksik konuları tespit edilir ve o konuda ders verebilecek öğretmene yönlendirilir.</p>
-          <p class="gain"><b>Siteye kazancı:</b> Öğrenci ders dışında da siteyi kullanır; eksik konudan ders satışına yönlendirir, yeni bir gelir kalemi açar.</p>
-          <ul class="ticks">
-            <li>Ders, sınıf ve konuya göre testler; LGS formatında karma denemeler ve süreli mod</li>
-            <li>Her sorunun anında çözümü ve açıklaması</li>
-            <li>Konu bazlı başarı haritası ve veliye gelişim raporu</li>
-            <li>Eksik konu tespiti: "Bu konuda bir öğretmenden destek al"</li>
-            <li>Video ders paketleriyle bağlantılı: her videonun ardından o derse özel pekiştirme soruları açılır</li>
-          </ul>
-          <div class="tariffs">
-            <div><b>Paketlere dahil</b>Ders hakkıyla birlikte test erişimi</div>
-            <div><b>Günlük ücretsiz</b>Kayıtlı her üyeye sınırlı test</div>
-            <div><b>Premium</b>Aylık sınırsız soru bankası</div>
-          </div>
-          <div class="who-tags"><span>Öğrenci</span><span>Veli</span><span>Yönetim</span></div>
-        </div>
-        <div class="mock mini">
-          <div class="quiz-q"><span class="chip acc" style="margin-bottom:8px;">8. Sınıf · Matematik · Oran-Orantı</span><br>4 işçi bir işi 12 günde bitiriyor. Aynı işi 6 işçi kaç günde bitirir?</div>
-          <div class="opts">
-            <div class="opt wrong">A) 18 gün</div>
-            <div class="opt right">B) 8 gün <span>✓</span></div>
-            <div class="opt">C) 6 gün</div>
-            <div class="opt">D) 10 gün</div>
-          </div>
-          <div class="explain">İşçi sayısı ile süre ters orantılıdır: 4 × 12 = 6 × x, dolayısıyla x = 8.</div>
-          <div class="suggest"><span>Ters orantıda 3 hatan var</span><b>Öğretmenden destek al →</b></div>
-        </div>
-      </article>
-
-    </div>
+    <div class="items" id="madde-liste"></div>
   </div>
 </section>
 
@@ -933,26 +776,26 @@
       <div class="phase">
         <div class="k">Aşama 1</div>
         <h4>Güven ve görünürlük</h4>
-        <p>Profil, branş ve yorum sistemleri; platformun vitrini güçlenir.</p>
-        <div class="chips"><span class="chip">1</span><span class="chip">2</span><span class="chip">3</span><span class="chip">4</span></div>
+        <p>Platformun vitrini ve güven katmanı güçlenir; veli öğretmeni tanıyarak seçer.</p>
+        <div class="chips" data-asama="1"></div>
       </div>
       <div class="phase">
         <div class="k">Aşama 2</div>
         <h4>Gelir ve sadakat</h4>
-        <p>Aile hesabı ve kademeli indirim; dönüşüm ve tekrar alım artar.</p>
-        <div class="chips"><span class="chip">6</span><span class="chip">7</span></div>
+        <p>Satın alma kolaylaşır; dönüşüm ve tekrar alım artar.</p>
+        <div class="chips" data-asama="2"></div>
       </div>
       <div class="phase">
         <div class="k">Aşama 3</div>
         <h4>Canlı eğitim</h4>
-        <p>Canlı yayın altyapısı, haftalık canlı ders, özel ders odası ve kayıtlar.</p>
-        <div class="chips"><span class="chip acc">Modül</span><span class="chip">5</span></div>
+        <p>Canlı yayın altyapısı, haftalık canlı ders ve özel ders odası; bu altyapıya bağlı kalemler.</p>
+        <div class="chips" data-asama="3"><span class="chip acc">Modül</span></div>
       </div>
       <div class="phase">
         <div class="k">Aşama 4</div>
         <h4>Akıllı öğrenme</h4>
-        <p>Video ders paketleri, bunlara bağlı yapay zekâ destekli soru bankası ve eksik konudan öğretmene yönlendirme.</p>
-        <div class="chips"><span class="chip">8</span><span class="chip">9</span></div>
+        <p>Öğrenci ders dışında da platformda öğrenmeye devam eder; içerik ve ölçme bir araya gelir.</p>
+        <div class="chips" data-asama="4"></div>
       </div>
     </div>
   </div>
@@ -985,6 +828,370 @@
     <div>Sınava Bir Gün Kala · Geliştirme Paketi · Eylül 2026</div>
   </div>
 </footer>
+
+<script src="maddeler.js"></script>
+<script>
+(function () {
+  var KAYNAK = Array.isArray(window.SUNUM_MADDELERI) ? window.SUNUM_MADDELERI : [];
+  var TASLAK_KEY = 'sbgk-sunum-taslak-v1';
+  var DUZENLE = /[?&]duzenle\b/.test(location.search);
+  var SAYILAR = ['sıfır','bir','iki','üç','dört','beş','altı','yedi','sekiz','dokuz','on','on bir','on iki','on üç','on dört','on beş','on altı','on yedi','on sekiz','on dokuz','yirmi'];
+  var YERLESIM = [
+    { v:'otomatik', t:'Otomatik', svg:'<rect x="2" y="4" width="22" height="28" rx="2" fill="currentColor" opacity=".25"/><rect x="30" y="4" width="22" height="28" rx="2" fill="none" stroke="currentColor"/><path d="M38 14l6 4-6 4" fill="none" stroke="currentColor"/>' },
+    { v:'sag', t:'Görsel sağda', svg:'<rect x="2" y="4" width="22" height="28" rx="2" fill="currentColor" opacity=".25"/><rect x="30" y="4" width="22" height="28" rx="2" fill="currentColor"/>' },
+    { v:'sol', t:'Görsel solda', svg:'<rect x="2" y="4" width="22" height="28" rx="2" fill="currentColor"/><rect x="30" y="4" width="22" height="28" rx="2" fill="currentColor" opacity=".25"/>' },
+    { v:'ust', t:'Görsel üstte', svg:'<rect x="2" y="2" width="50" height="18" rx="2" fill="currentColor"/><rect x="2" y="23" width="50" height="11" rx="2" fill="currentColor" opacity=".25"/>' },
+    { v:'alt', t:'Görsel altta', svg:'<rect x="2" y="2" width="50" height="11" rx="2" fill="currentColor" opacity=".25"/><rect x="2" y="16" width="50" height="18" rx="2" fill="currentColor"/>' },
+    { v:'yok', t:'Sadece yazı', svg:'<rect x="2" y="4" width="50" height="28" rx="2" fill="currentColor" opacity=".25"/>' }
+  ];
+  var CERCEVE = [['kart','Kart'],['tarayici','Tarayıcı penceresi'],['parlak','Işıklı kenar'],['yok','Çerçevesiz']];
+
+  function kopya(x) { return JSON.parse(JSON.stringify(x)); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
+  function sayiYazi(n) { return SAYILAR[n] || String(n); }
+  function yeniMadde() {
+    return { baslik:'Yeni madde', kisa_baslik:'', ozet:'', aciklama:'', kazanc:'', ozellikler:[], kutular:[], kimler:[], asama:1,
+      gorsel:{ tur:'yok' }, yerlesim:'otomatik', cerceve:'kart', gizli:false };
+  }
+
+  var maddeler = kopya(KAYNAK);
+  var degisti = false;
+  if (DUZENLE) {
+    try {
+      var t = JSON.parse(localStorage.getItem(TASLAK_KEY));
+      if (Array.isArray(t)) { maddeler = t; degisti = true; }
+    } catch (e) {}
+  }
+
+  /* ---------------- Çizim ---------------- */
+  function gorselHtml(m) {
+    var g = m.gorsel || { tur:'yok' };
+    if (g.tur === 'hazir' && g.html) return '<div class="mock mini">' + g.html + '</div>';
+    if (g.tur === 'resim' && g.kaynak) {
+      var c = m.cerceve || 'kart';
+      var bar = c === 'tarayici' ? '<div class="mock-bar"><i></i><i></i><i></i>' + (g.adres ? '<span>' + esc(g.adres) + '</span>' : '') + '</div>' : '';
+      return '<figure class="shot f-' + esc(c) + '"><div class="pic">' + bar +
+        '<img src="' + esc(g.kaynak) + '" alt="' + esc(g.aciklama || m.baslik) + '" loading="lazy"></div>' +
+        (g.aciklama ? '<figcaption>' + esc(g.aciklama) + '</figcaption>' : '') + '</figure>';
+    }
+    return '';
+  }
+
+  function yerlesimSinifi(m, sira) {
+    var y = m.yerlesim || 'otomatik';
+    var gv = gorselHtml(m);
+    if (!gv || y === 'yok') return 'v-none';
+    if (y === 'otomatik') return sira % 2 === 1 ? 'v-left' : 'v-right';
+    return { sag:'v-right', sol:'v-left', ust:'v-top', alt:'v-bottom' }[y] || 'v-right';
+  }
+
+  function ciz() {
+    var liste = document.getElementById('madde-liste');
+    var ozet = document.getElementById('ozet-liste');
+    ozet.querySelectorAll('.srow.dyn').forEach(function (r) { r.remove(); });
+    document.querySelectorAll('[data-asama]').forEach(function (c) { c.querySelectorAll('.chip.dyn').forEach(function (x) { x.remove(); }); });
+
+    var html = '', no = 0, sira = 0;
+    maddeler.forEach(function (m, i) {
+      var gorunur = !m.gizli;
+      if (!gorunur && !DUZENLE) return;
+      var numara = gorunur ? ++no : '–';
+      var id = gorunur ? 'm' + numara : 'gizli-' + i;
+      var gv = gorselHtml(m);
+      var cls = yerlesimSinifi(m, gorunur ? sira++ : 0);
+
+      var copy = '<div class="copy"><div class="item-head"><span class="item-no">' + numara + '</span><h3 class="title">' + esc(m.baslik) + '</h3></div>';
+      if (m.aciklama) copy += '<p class="value">' + esc(m.aciklama) + '</p>';
+      if (m.kazanc) copy += '<p class="gain"><b>Siteye kazancı:</b> ' + esc(m.kazanc) + '</p>';
+      if (m.ozellikler && m.ozellikler.length) copy += '<ul class="ticks">' + m.ozellikler.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul>';
+      if (m.kutular && m.kutular.length) copy += '<div class="boxes">' + m.kutular.map(function (k) { return '<div><b>' + esc(k.baslik) + '</b>' + esc(k.metin) + '</div>'; }).join('') + '</div>';
+      if (m.kimler && m.kimler.length) copy += '<div class="who-tags">' + m.kimler.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>';
+      copy += '</div>';
+
+      var arac = '';
+      if (DUZENLE) {
+        arac = (m.gizli ? '<span class="ed-flag">GİZLİ · müşteri görmez</span>' : '') +
+          '<div class="ed-tools">' +
+          '<button type="button" data-ed="yukari" data-i="' + i + '"' + (i === 0 ? ' disabled' : '') + ' title="Yukarı taşı">↑</button>' +
+          '<button type="button" data-ed="asagi" data-i="' + i + '"' + (i === maddeler.length - 1 ? ' disabled' : '') + ' title="Aşağı taşı">↓</button>' +
+          '<button type="button" data-ed="duzenle" data-i="' + i + '">Düzenle</button>' +
+          '<button type="button" data-ed="gizle" data-i="' + i + '">' + (m.gizli ? 'Göster' : 'Gizle') + '</button>' +
+          '<button type="button" class="danger" data-ed="sil" data-i="' + i + '">Sil</button></div>';
+      }
+      html += '<article class="item ' + cls + (m.gizli ? ' is-hidden' : '') + (DUZENLE && acik === i ? ' is-editing' : '') + '" id="' + id + '" data-i="' + i + '">' +
+        arac + copy + (gv ? '<div class="visual">' + gv + '</div>' : '') + '</article>';
+
+      if (!gorunur) return;
+      var row = document.createElement('a');
+      row.className = 'srow dyn';
+      row.href = '#' + id;
+      row.innerHTML = '<span class="sno">' + numara + '</span><span><b>' + esc(m.kisa_baslik || m.baslik) + '</b><small>' + esc(m.ozet) + '</small></span><span>' + esc(m.kazanc) + '</span>';
+      ozet.appendChild(row);
+      var chips = document.querySelector('[data-asama="' + (m.asama || 1) + '"]');
+      if (chips) {
+        var ch = document.createElement('span');
+        ch.className = 'chip dyn';
+        ch.title = m.kisa_baslik || m.baslik;
+        ch.textContent = numara;
+        chips.appendChild(ch);
+      }
+    });
+    liste.innerHTML = html;
+    document.querySelectorAll('[data-sayi]').forEach(function (e) { e.textContent = no; });
+    document.querySelectorAll('[data-sayi-yazi]').forEach(function (e) { e.textContent = sayiYazi(no); });
+  }
+
+  var acik = -1;
+  ciz();
+  if (location.hash && !DUZENLE) { var h = document.getElementById(location.hash.slice(1)); if (h) h.scrollIntoView(); }
+  if (!DUZENLE) return;
+
+  /* ---------------- Düzenleme modu ---------------- */
+  document.body.classList.add('ed-on');
+
+  var bar = document.createElement('div');
+  bar.className = 'ed-bar';
+  bar.innerHTML = '<span class="lbl">DÜZENLEME</span>' +
+    '<button type="button" class="ed-btn line" data-bar="ekle">+ Yeni madde</button>' +
+    '<button type="button" class="ed-btn primary" data-bar="indir">maddeler.js indir</button>' +
+    '<button type="button" class="ed-btn" data-bar="onizle">Müşteri görünümü</button>' +
+    '<button type="button" class="ed-btn" data-bar="sifirla">Taslağı sil</button>' +
+    '<span class="state"></span>';
+  document.body.appendChild(bar);
+  var durum = bar.querySelector('.state');
+
+  var toast = document.createElement('div');
+  toast.className = 'ed-toast';
+  document.body.appendChild(toast);
+  var toastT;
+  function bildir(m) { toast.textContent = m; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('show'); }, 2600); }
+
+  function durumYaz() {
+    durum.textContent = degisti ? 'İndirilmemiş değişiklik var' : 'Yayındaki dosyayla aynı';
+    durum.classList.toggle('dirty', degisti);
+  }
+  var kayitT;
+  function kaydet() {
+    degisti = true;
+    durumYaz();
+    clearTimeout(kayitT);
+    kayitT = setTimeout(function () {
+      try { localStorage.setItem(TASLAK_KEY, JSON.stringify(maddeler)); }
+      catch (e) { bildir('Taslak tarayıcıya sığmadı; çıkmadan önce dosyayı indirin.'); }
+    }, 300);
+  }
+  durumYaz();
+
+  window.addEventListener('beforeunload', function (e) { if (degisti) { e.preventDefault(); e.returnValue = ''; } });
+
+  function indir() {
+    var metin = '// Sunumdaki geliştirme maddeleri. Sıra = sayfadaki sıra; numaralar otomatik verilir.\n' +
+      '// Düzenleme modu için sayfayı adresin sonuna ?duzenle ekleyerek açın.\n' +
+      'window.SUNUM_MADDELERI = ' + JSON.stringify(maddeler, null, 2) + ';\n';
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([metin], { type:'text/javascript;charset=utf-8' }));
+    a.download = 'maddeler.js';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    bildir('maddeler.js indirildi. GitHub\'da eskisinin yerine yükleyin.');
+  }
+
+  bar.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-bar]'); if (!b) return;
+    var k = b.dataset.bar;
+    if (k === 'ekle') { maddeler.push(yeniMadde()); kaydet(); ciz(); ac(maddeler.length - 1); }
+    else if (k === 'indir') indir();
+    else if (k === 'onizle') {
+      var on = document.body.classList.toggle('ed-preview');
+      b.textContent = on ? 'Düzenlemeye dön' : 'Müşteri görünümü';
+      if (on) kapat();
+    }
+    else if (k === 'sifirla') {
+      if (!confirm('Tarayıcıdaki taslak silinsin ve yayındaki maddeler.js yeniden yüklensin mi?')) return;
+      try { localStorage.removeItem(TASLAK_KEY); } catch (err) {}
+      maddeler = kopya(KAYNAK); degisti = false; durumYaz(); kapat(); ciz();
+    }
+  });
+
+  document.getElementById('madde-liste').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ed]'); if (!b) return;
+    var i = +b.dataset.i, k = b.dataset.ed, t;
+    if (k === 'yukari' && i > 0) { t = maddeler[i - 1]; maddeler[i - 1] = maddeler[i]; maddeler[i] = t; if (acik === i) acik--; else if (acik === i - 1) acik++; }
+    else if (k === 'asagi' && i < maddeler.length - 1) { t = maddeler[i + 1]; maddeler[i + 1] = maddeler[i]; maddeler[i] = t; if (acik === i) acik++; else if (acik === i + 1) acik--; }
+    else if (k === 'gizle') maddeler[i].gizli = !maddeler[i].gizli;
+    else if (k === 'sil') {
+      if (!confirm('"' + maddeler[i].baslik + '" silinsin mi? Geçici olarak saklamak için "Gizle"yi kullanabilirsiniz.')) return;
+      maddeler.splice(i, 1);
+      if (acik === i) kapat(); else if (acik > i) acik--;
+    }
+    else if (k === 'duzenle') { ac(i); return; }
+    kaydet(); ciz();
+    if (k === 'yukari' || k === 'asagi') {
+      var el = document.querySelector('.item[data-i="' + (k === 'yukari' ? i - 1 : i + 1) + '"]');
+      if (el) el.scrollIntoView({ block:'center' });
+    }
+    if (acik >= 0) formDoldur();
+  });
+
+  /* Çekmece */
+  var cek = document.createElement('aside');
+  cek.className = 'ed-drawer';
+  cek.innerHTML = '<header><b>Maddeyi düzenle</b><button type="button" class="ed-btn line" data-kapat>Kapat</button></header><div class="ed-form"></div>';
+  document.body.appendChild(cek);
+  var form = cek.querySelector('.ed-form');
+  cek.querySelector('[data-kapat]').addEventListener('click', kapat);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && acik >= 0) kapat(); });
+
+  function ac(i) {
+    acik = i;
+    formDoldur();
+    cek.classList.add('open');
+    ciz();
+    var el = document.querySelector('.item[data-i="' + i + '"]');
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  function kapat() {
+    acik = -1;
+    cek.classList.remove('open');
+    document.querySelectorAll('.item.is-editing').forEach(function (x) { x.classList.remove('is-editing'); });
+  }
+
+  function alan(ad, etiket, deger, tur, not) {
+    var giris = tur === 'uzun'
+      ? '<textarea data-alan="' + ad + '" rows="4">' + esc(deger) + '</textarea>'
+      : '<input type="text" data-alan="' + ad + '" value="' + esc(deger) + '">';
+    return '<label class="ed-f"><span>' + etiket + '</span>' + giris + (not ? '<small>' + not + '</small>' : '') + '</label>';
+  }
+  function seg(ad, secenekler, deger) {
+    return '<div class="ed-seg" data-seg="' + ad + '">' + secenekler.map(function (o) {
+      return '<button type="button" data-v="' + o[0] + '" aria-pressed="' + (o[0] === deger) + '">' + o[1] + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function formDoldur() {
+    var m = maddeler[acik]; if (!m) return;
+    var g = m.gorsel || (m.gorsel = { tur:'yok' });
+    var hazirVar = !!g.html;
+    var turler = [['resim','Fotoğraf'],['yok','Görsel yok']];
+    if (hazirVar) turler.unshift(['hazir','Hazır çizim']);
+
+    var h = '';
+    h += '<div class="ed-sec"><h5>METİN</h5>' +
+      alan('baslik', 'Başlık', m.baslik) +
+      alan('aciklama', 'Açıklama', m.aciklama, 'uzun') +
+      alan('kazanc', 'Siteye kazancı', m.kazanc, 'uzun', 'Özet tablosunda da bu cümle görünür.') +
+      alan('ozellikler', 'Özellikler', (m.ozellikler || []).join('\n'), 'uzun', 'Her satır bir tik maddesi olur.') +
+      alan('kutular', 'Bilgi kutuları', (m.kutular || []).map(function (k) { return k.baslik + ' | ' + k.metin; }).join('\n'), 'uzun', 'İsteğe bağlı. Her satır bir kutu: Başlık | açıklama') +
+      alan('kimler', 'Kimler için', (m.kimler || []).join(', '), '', 'Virgülle ayırın: Veli, Öğrenci, Yönetim') +
+      '</div>';
+    h += '<div class="ed-sec"><h5>ÖZET TABLOSU VE YOL HARİTASI</h5>' +
+      alan('kisa_baslik', 'Özetteki kısa ad', m.kisa_baslik, '', 'Boş bırakılırsa başlık kullanılır.') +
+      alan('ozet', 'Özetteki tek cümle', m.ozet, 'uzun') +
+      '<label class="ed-f"><span>Yol haritası aşaması</span><select data-alan="asama">' +
+      [[1,'Aşama 1 · Güven ve görünürlük'],[2,'Aşama 2 · Gelir ve sadakat'],[3,'Aşama 3 · Canlı eğitim'],[4,'Aşama 4 · Akıllı öğrenme']].map(function (a) {
+        return '<option value="' + a[0] + '"' + (+m.asama === a[0] ? ' selected' : '') + '>' + a[1] + '</option>';
+      }).join('') + '</select></label></div>';
+    h += '<div class="ed-sec"><h5>GÖRSEL</h5>' +
+      '<div class="ed-f"><span>Görsel türü</span>' + seg('gtur', turler, g.tur) + '</div>';
+    if (g.tur === 'resim') {
+      h += '<div class="ed-f"><span>Fotoğraf</span><div class="ed-drop' + (g.kaynak ? ' has' : '') + '" data-drop' +
+        (g.kaynak ? ' style="background-image:url(\'' + esc(g.kaynak).replace(/'/g, '%27') + '\')"' : '') +
+        '>Fotoğrafı buraya sürükleyin ya da tıklayıp seçin</div><input type="file" accept="image/*" hidden data-dosya>' +
+        '<small>Fotoğraf küçültülüp maddeler.js içine gömülür; ayrıca yüklemeniz gerekmez.</small></div>' +
+        alan('g_kaynak_yol', 'ya da dosya yolu', /^data:/.test(g.kaynak || '') ? '' : (g.kaynak || ''), '', 'GitHub\'a ayrıca yüklediğiniz bir görsel için, ör. gorseller/ekran.jpg') +
+        alan('g_aciklama', 'Görsel altı yazısı', g.aciklama, '', 'İsteğe bağlı.') +
+        '<div class="ed-f"><span>Çerçeve</span>' + seg('cerceve', CERCEVE, m.cerceve || 'kart') + '</div>';
+      if ((m.cerceve || 'kart') === 'tarayici') h += alan('g_adres', 'Pencerede görünen adres', g.adres, '', 'İsteğe bağlı, ör. sinavabirgunkala.com/video-dersler');
+    } else if (g.tur === 'hazir') {
+      h += '<p class="ed-note">Bu madde için sayfaya özel hazırlanmış bir çizim kullanılıyor. Yerine fotoğraf koyarsanız çizim kaybolmaz; türü tekrar "Hazır çizim" yaparak geri dönebilirsiniz.</p>';
+    }
+    h += '</div>';
+    h += '<div class="ed-sec"><h5>YERLEŞİM</h5><div class="ed-layouts" data-seg="yerlesim">' + YERLESIM.map(function (y) {
+      return '<button type="button" data-v="' + y.v + '" aria-pressed="' + (y.v === (m.yerlesim || 'otomatik')) + '"><svg viewBox="0 0 54 36">' + y.svg + '</svg>' + y.t + '</button>';
+    }).join('') + '</div><p class="ed-note" style="margin-top:10px;">Otomatik: maddeler sırayla bir sağ bir sol dizilir.</p></div>';
+    h += '<div class="ed-sec"><div class="ed-seg">' +
+      '<button type="button" data-ed-form="gizle">' + (m.gizli ? 'Maddeyi göster' : 'Maddeyi gizle') + '</button>' +
+      '<button type="button" data-ed-form="kopyala">Kopyasını oluştur</button></div></div>';
+    form.innerHTML = h;
+  }
+
+  var cizT;
+  function sonraCiz() { clearTimeout(cizT); cizT = setTimeout(ciz, 120); }
+
+  form.addEventListener('input', function (e) {
+    var m = maddeler[acik], a = e.target.dataset.alan; if (!m || !a) return;
+    var v = e.target.value;
+    if (a === 'ozellikler') m.ozellikler = v.split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
+    else if (a === 'kimler') m.kimler = v.split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+    else if (a === 'kutular') m.kutular = v.split('\n').map(function (x) {
+      var p = x.split('|'); return { baslik:(p.shift() || '').trim(), metin:p.join('|').trim() };
+    }).filter(function (k) { return k.baslik || k.metin; });
+    else if (a === 'asama') m.asama = +v;
+    else if (a === 'g_kaynak_yol') { m.gorsel.kaynak = v.trim(); }
+    else if (a === 'g_aciklama') m.gorsel.aciklama = v;
+    else if (a === 'g_adres') m.gorsel.adres = v;
+    else m[a] = v;
+    kaydet(); sonraCiz();
+  });
+  form.addEventListener('change', function (e) {
+    if (e.target.dataset.alan === 'asama') { maddeler[acik].asama = +e.target.value; kaydet(); ciz(); }
+    if (e.target.hasAttribute('data-dosya') && e.target.files[0]) resimAl(e.target.files[0]);
+  });
+
+  form.addEventListener('click', function (e) {
+    var m = maddeler[acik]; if (!m) return;
+    var b = e.target.closest('button[data-v]');
+    if (b) {
+      var s = b.parentElement.dataset.seg, v = b.dataset.v;
+      if (s === 'gtur') m.gorsel.tur = v;
+      else if (s === 'cerceve') m.cerceve = v;
+      else if (s === 'yerlesim') m.yerlesim = v;
+      kaydet(); ciz(); formDoldur(); return;
+    }
+    var f = e.target.closest('[data-ed-form]');
+    if (f) {
+      if (f.dataset.edForm === 'gizle') { m.gizli = !m.gizli; }
+      else if (f.dataset.edForm === 'kopyala') {
+        var k = kopya(m); k.baslik += ' (kopya)';
+        maddeler.splice(acik + 1, 0, k); kaydet(); ciz(); ac(acik + 1); return;
+      }
+      kaydet(); ciz(); formDoldur(); return;
+    }
+    if (e.target.closest('[data-drop]')) form.querySelector('[data-dosya]').click();
+  });
+  ['dragover','dragenter'].forEach(function (ev) {
+    form.addEventListener(ev, function (e) { var d = e.target.closest('[data-drop]'); if (d) { e.preventDefault(); d.classList.add('over'); } });
+  });
+  form.addEventListener('dragleave', function (e) { var d = e.target.closest('[data-drop]'); if (d) d.classList.remove('over'); });
+  form.addEventListener('drop', function (e) {
+    var d = e.target.closest('[data-drop]'); if (!d) return;
+    e.preventDefault(); d.classList.remove('over');
+    var f = e.dataTransfer.files[0]; if (f && /^image\//.test(f.type)) resimAl(f);
+  });
+
+  function resimAl(dosya) {
+    var hedef = acik;
+    var url = URL.createObjectURL(dosya);
+    var img = new Image();
+    img.onload = function () {
+      var MAX = 1800, w = img.naturalWidth, h = img.naturalHeight, o = Math.min(1, MAX / Math.max(w, h));
+      var c = document.createElement('canvas');
+      c.width = Math.round(w * o); c.height = Math.round(h * o);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      var veri = c.toDataURL('image/webp', 0.85);
+      if (veri.indexOf('data:image/webp') !== 0) veri = c.toDataURL('image/jpeg', 0.86);
+      URL.revokeObjectURL(url);
+      var m = maddeler[hedef]; if (!m) return;
+      m.gorsel.tur = 'resim';
+      m.gorsel.kaynak = veri;
+      kaydet(); ciz(); if (acik === hedef) formDoldur();
+      bildir('Fotoğraf eklendi (' + Math.round(veri.length * 0.75 / 1024) + ' KB).');
+    };
+    img.onerror = function () { URL.revokeObjectURL(url); bildir('Bu dosya okunamadı.'); };
+    img.src = url;
+  }
+})();
+</script>
 
 </body>
 </html>
